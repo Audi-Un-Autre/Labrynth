@@ -16,8 +16,8 @@ public class PLAYER_MOV : MonoBehaviour {
     void Start()
     {
 
-        stopRadius = .5f;
-        maxSpeed = 20f;
+        stopRadius = 1f;
+        maxSpeed = 12f;
     }
 
     void Update()
