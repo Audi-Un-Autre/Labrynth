@@ -8,6 +8,7 @@ public class ENEMY_AI : MonoBehaviour {
     Camera view;
     private GameObject[] wayPoints;
     NavMeshAgent nav;
+    [SerializeField] Light light;
 
     Vector3 destination;
     Vector3 playerDestination;
@@ -46,12 +47,14 @@ public class ENEMY_AI : MonoBehaviour {
         view = gameObject.GetComponentInChildren<Camera>();
         fieldOfView = view.fieldOfView;
         objectCollision = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider>();
+        light = GetComponent<Light>();
     }
 	
 	void Update () {
         switch (state)
         {
             case GameState.IDLE:
+                light.color = Color.white;
                 if (CheckForPlayer()){
                     state = GameState.CHASING;
                     destinationSet = false;
@@ -69,6 +72,7 @@ public class ENEMY_AI : MonoBehaviour {
             break;
 
             case GameState.ALERTED:
+                light.color = Color.yellow;
                 waitTime += Time.deltaTime;
                 if (waitTime >= maxTime){
                     timeReached = true;
@@ -89,6 +93,7 @@ public class ENEMY_AI : MonoBehaviour {
             break;
 
             case GameState.CHASING:
+                light.color = Color.red;
                 if (CheckForPlayer())
                     Chasing(playerDestination);
                 else{
@@ -160,6 +165,7 @@ public class ENEMY_AI : MonoBehaviour {
         }
     }
 
+    // TURN AROUND IN A RANDOM DIRECTION WHILE IN PLACE
     void Alerted(){
         nav.speed = ALERT_SPEED;
         Debug.Log("STATE: ALERTED.");
