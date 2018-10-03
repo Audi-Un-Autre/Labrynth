@@ -8,8 +8,11 @@ public class ENEMY_AI : MonoBehaviour {
     Camera view;
     private GameObject[] wayPoints;
     NavMeshAgent nav;
+
     Vector3 destination;
     Vector3 playerDestination;
+    Vector3 randDirection;
+
     private Plane[] geoPlanes;
     private Collider objectCollision;
     Rigidbody rb;
@@ -19,9 +22,10 @@ public class ENEMY_AI : MonoBehaviour {
 
     float lastState = 0.0f;
     private bool destinationSet;
-    private bool playerFound;
+    [SerializeField] private bool playerFound;
     private float fieldOfView;
 
+    static float IDLE_SPEED = 2;
     static float PATROL_SPEED = 5;
     static float ALERT_SPEED = 0;
     static float CHASE_SPEED = 10;
@@ -29,6 +33,8 @@ public class ENEMY_AI : MonoBehaviour {
 
     float waitTime = 0f;
     float maxTime = 5f;
+    float idleTime = 0f;
+    float maxIdleTime = 3f;
     bool timeReached = false;
 
 	void Start () {
@@ -37,7 +43,7 @@ public class ENEMY_AI : MonoBehaviour {
         state = GameState.IDLE;
         lastState = Time.time;
 
-        view = GameObject.Find("ENEMY_CAM").GetComponent<Camera>();
+        view = gameObject.GetComponentInChildren<Camera>();
         fieldOfView = view.fieldOfView;
         objectCollision = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider>();
     }
@@ -49,6 +55,17 @@ public class ENEMY_AI : MonoBehaviour {
                 if (CheckForPlayer()){
                     state = GameState.CHASING;
                     destinationSet = false;
+                }
+                else{
+                    // GO IN A RANDOM DIRECTION WHILE IDLE
+                    /*
+                    nav.speed = IDLE_SPEED;
+                    idleTime += Time.deltaTime;
+                    if (idleTime >= maxIdleTime){
+                        Idle();
+                        idleTime = 0;
+                        maxIdleTime = Random.Range(1, 5);
+                    }*/
                 }
             break;
 
@@ -121,6 +138,16 @@ public class ENEMY_AI : MonoBehaviour {
         else
             playerFound = false;
         return playerFound;
+    }
+
+    void Idle(){
+        float x = transform.position.x;
+        float z = transform.position.z;
+        float _x = x + Random.Range(x - 100, x + 100);
+        float _z = z + Random.Range(z - 100, z + 100);
+        destination = new Vector3(_x, transform.position.y, _z);
+        nav.SetDestination(destination);
+        destinationSet = false;
     }
 
     void CheckDestination(){
