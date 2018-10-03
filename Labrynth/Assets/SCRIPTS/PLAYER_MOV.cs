@@ -16,7 +16,7 @@ public class PLAYER_MOV : MonoBehaviour {
     void Start()
     {
 
-        stopRadius = 1f;
+        stopRadius = 2f;
         maxSpeed = 12f;
     }
 
@@ -44,7 +44,6 @@ public class PLAYER_MOV : MonoBehaviour {
             clicked = true;
             if (hit.collider.tag == "Floor")
             {
-                Debug.Log(hit.point);
                 targetDestination = hit.point;
             }
         }
