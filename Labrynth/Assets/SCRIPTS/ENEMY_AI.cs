@@ -58,14 +58,13 @@ public class ENEMY_AI : MonoBehaviour {
                 }
                 else{
                     // GO IN A RANDOM DIRECTION WHILE IDLE
-                    /*
                     nav.speed = IDLE_SPEED;
                     idleTime += Time.deltaTime;
                     if (idleTime >= maxIdleTime){
                         Idle();
                         idleTime = 0;
                         maxIdleTime = Random.Range(1, 5);
-                    }*/
+                    }
                 }
             break;
 
