@@ -223,7 +223,8 @@ public class ENEMY_AI : MonoBehaviour {
             if (nav.remainingDistance <= nav.stoppingDistance){
                 if (!nav.hasPath || nav.velocity.sqrMagnitude == 0f){
                     destinationSet = false;
-                    nav.enabled = false;
+                    nav.isStopped = true;
+                    nav.ResetPath();
                 }
             }
         }
