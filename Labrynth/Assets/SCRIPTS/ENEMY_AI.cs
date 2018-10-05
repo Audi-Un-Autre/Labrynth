@@ -7,12 +7,14 @@ public class ENEMY_AI : MonoBehaviour {
 
     Camera view;
     private GameObject[] wayPoints;
+    private GameObject wayPoint;
     NavMeshAgent nav;
     [SerializeField] Light light;
 
     Vector3 destination;
     Vector3 playerDestination;
     Vector3 randDirection;
+    Vector3 lastSeen;
 
     Quaternion look;
 
@@ -43,6 +45,7 @@ public class ENEMY_AI : MonoBehaviour {
     float wait = 0f;
     int currentPoint;
     bool timeReached = false;
+    bool waypointsSpawned;
 
 	void Start () {
         // GRAB COMPONENTS
@@ -63,25 +66,31 @@ public class ENEMY_AI : MonoBehaviour {
 
         // SETUP PLAYER COLLISION
         objectCollision = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider>();
+        waypointsSpawned = false;
     }
 	
 	void Update () {
+
+        /*
+         * 
+         * Escalation: Idle -> Chase -> Attack
+         * Descalation: Alert -> Patrol
+         * 
+         */
         switch (state)
         {
             case GameState.IDLE:
+                waypointsSpawned = false;
                 light.color = Color.white;
-                if (CheckForPlayer())
-                {
+                if (CheckForPlayer()){
                     state = GameState.CHASING;
                     destinationSet = false;
                 }
-                else
-                {
+                else{
                     // GO IN A RANDOM DIRECTION WHILE IDLE
                     nav.speed = IDLE_SPEED;
                     idleTime += Time.deltaTime;
-                    if (idleTime >= maxIdleTime)
-                    {
+                    if (idleTime >= maxIdleTime){
                         Idle();
                         idleTime = 0;
                         maxIdleTime = Random.Range(1, 5);
@@ -89,8 +98,19 @@ public class ENEMY_AI : MonoBehaviour {
                 }
                 break;
 
+            case GameState.CHASING:
+                light.color = Color.red;
+                if (CheckForPlayer())
+                    Chasing(playerDestination);
+                else{
+                    destinationSet = false;
+                    state = GameState.ALERTED;
+                }
+                break;
+
             case GameState.ALERTED:
                 // IDLE AT THE SPOT
+
                 light.color = Color.yellow;
                 waitTime += Time.deltaTime;
                 if (waitTime >= maxTime)
@@ -99,7 +119,7 @@ public class ENEMY_AI : MonoBehaviour {
                     waitTime = 0;
                     destinationSet = false;
                     wait = 0;
-                    state = GameState.IDLE;
+                    state = GameState.PATROL;
                 }
                 else if (waitTime < maxTime)
                 {
@@ -124,39 +144,57 @@ public class ENEMY_AI : MonoBehaviour {
                     lookTime = 0;
                 }
                 // CONTINUE LOOKING IN DIRECTION LAST SEEN PLAYER FOR 1.5s
-                if (wait > 1.5f){
+                if (wait > 1.5f)
+                {
                     transform.rotation = Quaternion.Slerp(transform.rotation, look, Time.deltaTime * 5f);
                     transform.Translate(Vector3.forward * ALERT_SPEED * Time.deltaTime);
-                }
-                break;
-
-            case GameState.CHASING:
-                light.color = Color.red;
-                if (CheckForPlayer())
-                    Chasing(playerDestination);
-                else
-                {
-                    destinationSet = false;
-                    state = GameState.ALERTED;
                 }
                 break;
 
             // CREATE WAYPOINTS BASED ON LAST SEEN LOCATION ****
             case GameState.PATROL:
                 light.color = Color.blue;
+                bool called = false;
+                if (!waypointsSpawned && !called){
+                    called = true;
+                    CreateWaypoints();
+                }
+                if (waypointsSpawned){
+                    waitTime += Time.deltaTime;
+                    if (waitTime >= maxTime)
+                    {
+                        timeReached = true;
+                        waitTime = 0;
+                        destinationSet = false;
+                        wait = 0;
+                        state = GameState.IDLE;
+                    }
+                    else if (waitTime < maxTime)
+                    {
+                        timeReached = false;
+                        if (!CheckForPlayer() && !timeReached)
+                            Alerted();
+                        else if (CheckForPlayer() && !timeReached)
+                        {
+                            waitTime = 0;
+                            destinationSet = false;
+                            wait = 0;
+                            state = GameState.CHASING;
+                        }
+                    }
+                }
                 break;
 
             // HANDLE ATTACK ANIMs AND HP *********************
             case GameState.ATTACKING:
-
+                light.color = Color.red;
                 break;
 
             // HANDLE DEATH ANIMs & MODEL FADEOUT *************
             case GameState.DEATH:
-
                 break;
         }
-	}
+    }
 
     bool CheckForPlayer(){
         geoPlanes = GeometryUtility.CalculateFrustumPlanes(view);
@@ -194,10 +232,22 @@ public class ENEMY_AI : MonoBehaviour {
     }
 
     void CreateWaypoints(){
-        Transform waypoint1, waypoint2, waypoint3, waypoint4;
-        Vector3 bestPath;
+        float distanceFromOrigin = 5f;
+        Vector3 origin = playerDestination;
+        int _wayPoints = 4;
+        Vector3 waypointSet = playerDestination;
 
-
+        // CREATE THE WAYPOINTS WITH THE ORIGIN AT THE PLAYER"S LAST SEEN LOCATION
+        for (int i = 0; i < _wayPoints; i++){
+            wayPoint = new GameObject();
+            wayPoint.tag = "Waypoint";
+            float point = (i * 1.0f) / _wayPoints;
+            float angle = point * Mathf.PI * 2;
+            float x = Mathf.Sin(angle) * distanceFromOrigin;
+            float y = Mathf.Cos(angle) * distanceFromOrigin;
+            wayPoint.transform.position = new Vector3(x, 0, y) + playerDestination;
+        }
+        waypointsSpawned = true;
     }
 
     void Patrol()
@@ -205,6 +255,7 @@ public class ENEMY_AI : MonoBehaviour {
         Debug.Log("STATE: PATROL.");
         nav.speed = PATROL_SPEED;
 
+        wayPoints = GameObject.FindGameObjectsWithTag("Waypoint");
         if (!destinationSet)
         {
             currentPoint = Random.Range(0, wayPoints.Length);
