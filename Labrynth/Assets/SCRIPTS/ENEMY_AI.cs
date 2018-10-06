@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
+using System;
+using Random = UnityEngine.Random;
 
 public class ENEMY_AI : MonoBehaviour {
 
     Camera view;
-    private GameObject[] wayPoints;
+    [SerializeField] GameObject[] wayPoints;
     private GameObject wayPoint;
     NavMeshAgent nav;
     [SerializeField] Light light;
@@ -30,11 +32,12 @@ public class ENEMY_AI : MonoBehaviour {
     [SerializeField] private bool playerFound;
     private float fieldOfView;
 
-    static float IDLE_SPEED = 2;
-    static float PATROL_SPEED = 5;
-    static float ALERT_SPEED = 0;
-    static float CHASE_SPEED = 10;
+    static float IDLE_SPEED = 2f;
+    static float PATROL_SPEED = 1f;
+    static float ALERT_SPEED = 0f;
+    static float CHASE_SPEED = 10f;
     static float SPEED_MODIFER = 1.5f;
+    static int _wayPoints = 4;
 
     float waitTime = 0f;
     float maxTime = 10f;
@@ -43,7 +46,7 @@ public class ENEMY_AI : MonoBehaviour {
     float lookTime = 0f;
     float maxLookTime = 3f;
     float wait = 0f;
-    int currentPoint;
+    int currentPoint = 0;
     bool timeReached = false;
     bool waypointsSpawned;
 
@@ -80,7 +83,6 @@ public class ENEMY_AI : MonoBehaviour {
         switch (state)
         {
             case GameState.IDLE:
-                waypointsSpawned = false;
                 light.color = Color.white;
                 if (CheckForPlayer()){
                     state = GameState.CHASING;
@@ -155,33 +157,17 @@ public class ENEMY_AI : MonoBehaviour {
             case GameState.PATROL:
                 light.color = Color.blue;
                 bool called = false;
-                if (!waypointsSpawned && !called){
+                if (CheckForPlayer()){
+                    PatrolDone();
+                    state = GameState.CHASING;
+                }
+                else if (!waypointsSpawned && !called){
                     called = true;
                     CreateWaypoints();
                 }
-                if (waypointsSpawned){
-                    waitTime += Time.deltaTime;
-                    if (waitTime >= maxTime)
-                    {
-                        timeReached = true;
-                        waitTime = 0;
-                        destinationSet = false;
-                        wait = 0;
-                        state = GameState.IDLE;
-                    }
-                    else if (waitTime < maxTime)
-                    {
-                        timeReached = false;
-                        if (!CheckForPlayer() && !timeReached)
-                            Alerted();
-                        else if (CheckForPlayer() && !timeReached)
-                        {
-                            waitTime = 0;
-                            destinationSet = false;
-                            wait = 0;
-                            state = GameState.CHASING;
-                        }
-                    }
+                else if (waypointsSpawned && Patrol()){
+                    PatrolDone();
+                    state = GameState.IDLE;
                 }
                 break;
 
@@ -232,44 +218,81 @@ public class ENEMY_AI : MonoBehaviour {
     }
 
     void CreateWaypoints(){
-        float distanceFromOrigin = 5f;
+        float distanceFromOrigin = 10f;
         Vector3 origin = playerDestination;
-        int _wayPoints = 4;
         Vector3 waypointSet = playerDestination;
 
         // CREATE THE WAYPOINTS WITH THE ORIGIN AT THE PLAYER"S LAST SEEN LOCATION
         for (int i = 0; i < _wayPoints; i++){
-            wayPoint = new GameObject();
+            wayPoint = new GameObject("WAYPOINT " + (i + 1));
             wayPoint.tag = "Waypoint";
             float point = (i * 1.0f) / _wayPoints;
             float angle = point * Mathf.PI * 2;
             float x = Mathf.Sin(angle) * distanceFromOrigin;
             float y = Mathf.Cos(angle) * distanceFromOrigin;
             wayPoint.transform.position = new Vector3(x, 0, y) + playerDestination;
+            wayPoint.transform.parent = this.transform;
         }
+
+        // ADD CHILD WAYPOINTS TO ARRAY
+        foreach (Transform child in transform)
+        {
+            if (child.CompareTag("Waypoint"))
+                wayPoints = GameObject.FindGameObjectsWithTag("Waypoint");
+        }
+
         waypointsSpawned = true;
     }
 
-    void Patrol()
+    bool Patrol()
     {
         Debug.Log("STATE: PATROL.");
         nav.speed = PATROL_SPEED;
 
-        wayPoints = GameObject.FindGameObjectsWithTag("Waypoint");
-        if (!destinationSet)
-        {
-            currentPoint = Random.Range(0, wayPoints.Length);
-            SetDestination(wayPoints[currentPoint].transform.position);
-        }
+        // SET CURRENT DESTINATION IN WAYPONT ARRAY
+        if (currentPoint != _wayPoints){
+            if (!destinationSet){
+                SetDestination(wayPoints[currentPoint].transform.position);
+                currentPoint++;
+            }
 
-        else if (destinationSet && gameObject.transform.position != destination)
-        {
-            nav.destination = destination;
-            CheckDestination();
+            // GO TO DESTINATION
+            else if (destinationSet && gameObject.transform.position != destination){
+                nav.destination = destination;
+                CheckDestination();
+            }
+            return false;
         }
+        return true;
+    }
+
+    void PatrolDone(){
+        // REMOVE WAYPOINTS
+
+        foreach (Transform child in transform)
+        {
+            if (child.CompareTag("Waypoint"))
+                GameObject.Destroy(child.gameObject);
+        }
+        waypointsSpawned = false;
     }
 
     void CheckDestination(){
+
+        if (waypointsSpawned){
+            // CHECK IF PATH IS PATHABLE, ex: waypoint spawned in an obstacle means waypoint is not pathable
+            Vector3 spawnLocation = wayPoints[currentPoint].transform.position;
+            NavMeshPath path = new NavMeshPath();
+            nav.CalculatePath(nav.destination, path);
+
+            if (path.status != NavMeshPathStatus.PathComplete){
+                destinationSet = false;
+                nav.isStopped = true;
+                nav.ResetPath();
+            }
+        }
+
+        // CHECK IF PATH COMPLETED
         if (!nav.pathPending){
             if (nav.remainingDistance <= nav.stoppingDistance){
                 if (!nav.hasPath || nav.velocity.sqrMagnitude == 0f){

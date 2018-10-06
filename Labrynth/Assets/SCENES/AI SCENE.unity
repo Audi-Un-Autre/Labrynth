@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 29491456}
   m_Layer: 0
   m_Name: Wall II
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 1
   m_StaticEditorFlags: 8
@@ -326,6 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f8971d802ac424cb0a7b708dce8b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wayPoints: []
   light: {fileID: 0}
   playerFound: 0
 --- !u!195 &63670703
@@ -878,6 +879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f8971d802ac424cb0a7b708dce8b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wayPoints: []
   light: {fileID: 0}
   playerFound: 0
 --- !u!54 &258383712
@@ -943,6 +945,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f8971d802ac424cb0a7b708dce8b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wayPoints: []
   light: {fileID: 0}
   playerFound: 0
 --- !u!195 &356482108
@@ -1117,6 +1120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f8971d802ac424cb0a7b708dce8b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wayPoints: []
   light: {fileID: 0}
   playerFound: 0
 --- !u!195 &479435858
@@ -1375,6 +1379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f8971d802ac424cb0a7b708dce8b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wayPoints: []
   light: {fileID: 0}
   playerFound: 0
 --- !u!195 &801533533
@@ -1858,6 +1863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f8971d802ac424cb0a7b708dce8b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wayPoints: []
   light: {fileID: 0}
   playerFound: 0
 --- !u!195 &1241460207
@@ -2078,7 +2084,7 @@ GameObject:
   - component: {fileID: 1269536148}
   m_Layer: 0
   m_Name: Wall I
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 1
   m_StaticEditorFlags: 8
@@ -2327,7 +2333,7 @@ GameObject:
   - component: {fileID: 1460903589}
   m_Layer: 0
   m_Name: Wall
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 1
   m_StaticEditorFlags: 8
@@ -2772,7 +2778,7 @@ GameObject:
   - component: {fileID: 1746055636}
   m_Layer: 0
   m_Name: Wall IV
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 1
   m_StaticEditorFlags: 8
@@ -2940,7 +2946,7 @@ GameObject:
   - component: {fileID: 1803244509}
   m_Layer: 0
   m_Name: Wall III
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 1
   m_StaticEditorFlags: 8
@@ -3024,7 +3030,7 @@ GameObject:
   - component: {fileID: 1863624420}
   m_Layer: 0
   m_Name: Wall V
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 1
   m_StaticEditorFlags: 8
@@ -3541,6 +3547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f8971d802ac424cb0a7b708dce8b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wayPoints: []
   light: {fileID: 0}
   playerFound: 0
 --- !u!195 &2135915056
