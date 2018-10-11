@@ -4,76 +4,140 @@ using UnityEngine;
 
 public class PLAYER_MOV : MonoBehaviour {
 
+
+
+    /*
+     * 
+     *  SOUND BASED MOVEMENT: 
+     *      The sphere collider of this object will grow depending on the speed of the player.
+     *      There is an absolute max of the collider's radius based upon whether the player is walking, running, or sneaking. 
+     * 
+     */ 
+
     Vector3 targetDestination;
     Vector3 playerPosition;
     Vector3 destination;
     [SerializeField] Rigidbody rb;
+    [SerializeField] Collider[] hitColliders;
 
     [SerializeField] bool clicked;
-    float maxSpeed;
+    [SerializeField] float maxSpeed;
+    [SerializeField] bool moving;
+
+    float defaultSpeed = 12f;
+    float colMod = .5f;
+    float maxCol;
+    float walkSpeed;
     float stopRadius;
+    float waitTime = 0f;
+    float maxTime = .5f;
+    float radius = .5f;
+
 
     void Start()
     {
-
+        walkSpeed = 6f;
         stopRadius = 2f;
-        maxSpeed = 12f;
+        maxSpeed = defaultSpeed;
     }
 
-    void Update()
-    {
+    void Update(){
 
+        
         MouseClicked();
+        RunOrWalk();
+        if (clicked){
 
-        if (clicked)
-        {
             SetDestination();
             GoToDestination();
         }
 
     }
 
-    // CHECK IF PLAYER IS CLICKING
-    private void MouseClicked()
+    private void OnDrawGizmos()
     {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, radius);
+    }
 
+    // DETERMINE SPEEDS AND COLLIDER ABSOLUTES WHEN WALKING OR RUNNING
+    private void RunOrWalk(){
+        if (moving){
+            if (Input.GetKey(KeyCode.LeftShift)){
+                maxCol = 3.5f;
+                maxSpeed = walkSpeed;
+                waitTime += Time.deltaTime * .25f;
+
+                if (radius > maxCol)
+                    radius = .5f;
+                else if (waitTime <= maxTime){
+                    if (radius != maxCol){
+                        radius += colMod;
+                        hitColliders = Physics.OverlapSphere(transform.position, radius, 8);
+                        waitTime = 0;
+                    }
+                }
+            }
+            else{
+                maxCol = 9.5f;
+                maxSpeed = defaultSpeed;
+                waitTime += Time.deltaTime * .5f;
+
+                 if (radius > maxCol)
+                    radius = .5f;
+                else if (waitTime <= maxTime){
+                    if (radius != maxCol)
+                        radius += colMod;
+                    hitColliders = Physics.OverlapSphere(transform.position, radius, 8);
+                    waitTime = 0;
+                }
+            }
+        }
+        else{
+            waitTime += Time.deltaTime * .5f;
+            if (waitTime <= maxTime){
+                if (radius != .5f)
+                    radius -= colMod;
+                hitColliders = Physics.OverlapSphere(transform.position, radius, 8);
+                waitTime = 0;
+            }
+        }
+
+        // SEE WHICH ENEMY IS DETECTING PLAYER SOUND
+        foreach (Collider enemy in hitColliders)
+             Debug.Log(enemy.gameObject.name);
+    }
+
+    // CHECK IF PLAYER IS CLICKING
+    private void MouseClicked(){
         // GET MOUSE CLICK POSITION WHEN CLICKED, IF CLICKED ON THE FLOOR
         RaycastHit hit;
-        if (Input.GetMouseButton(0) && Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100))
-        {
+        if (Input.GetMouseButton(0) && Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100)){
             clicked = true;
             if (hit.collider.tag == "Floor")
-            {
                 targetDestination = hit.point;
-            }
         }
     }
 
     // MOVE PLAYER TO CLICK LOCATION
-    private void SetDestination()
-    {
-
+    private void SetDestination(){
         // CREATE PATH TO DESTINATION
         destination = targetDestination - transform.position;
         transform.LookAt(targetDestination);
     }
 
     // CHECK IF ARRIVED TO DESTINATION
-    private void GoToDestination()
-    {
-
+    private void GoToDestination(){
         // MOVE
-        Debug.Log(destination.magnitude);
-        if (destination.magnitude > stopRadius)
-        {
+        if (destination.magnitude > stopRadius){
+            moving = true;
             destination.Normalize();
             destination *= maxSpeed;
             rb.velocity = destination;
         }
-
         // STOP
-        else
-        {
+        else{
+            moving = false;
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
             clicked = false;

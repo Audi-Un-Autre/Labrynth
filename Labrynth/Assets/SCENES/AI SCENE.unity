@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 2590762}
   - component: {fileID: 2590761}
   - component: {fileID: 2590760}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ENEMY_CAM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,13 +293,13 @@ GameObject:
   - component: {fileID: 63670703}
   - component: {fileID: 63670702}
   - component: {fileID: 63670701}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ENEMY (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &63670701
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -326,6 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f8971d802ac424cb0a7b708dce8b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   wayPoints: []
   light: {fileID: 0}
   playerFound: 0
@@ -721,7 +722,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 252144758}
+  hitColliders: []
   clicked: 0
+  maxSpeed: 0
+  moving: 0
 --- !u!1 &258383704
 GameObject:
   m_ObjectHideFlags: 0
@@ -737,7 +741,7 @@ GameObject:
   - component: {fileID: 258383710}
   - component: {fileID: 258383711}
   - component: {fileID: 258383712}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ENEMY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -879,6 +883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f8971d802ac424cb0a7b708dce8b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   wayPoints: []
   light: {fileID: 0}
   playerFound: 0
@@ -912,13 +917,13 @@ GameObject:
   - component: {fileID: 356482108}
   - component: {fileID: 356482107}
   - component: {fileID: 356482106}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ENEMY (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &356482106
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -945,6 +950,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f8971d802ac424cb0a7b708dce8b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   wayPoints: []
   light: {fileID: 0}
   playerFound: 0
@@ -1087,13 +1093,13 @@ GameObject:
   - component: {fileID: 479435858}
   - component: {fileID: 479435857}
   - component: {fileID: 479435856}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ENEMY (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &479435856
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1120,6 +1126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f8971d802ac424cb0a7b708dce8b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   wayPoints: []
   light: {fileID: 0}
   playerFound: 0
@@ -1346,13 +1353,13 @@ GameObject:
   - component: {fileID: 801533533}
   - component: {fileID: 801533532}
   - component: {fileID: 801533531}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ENEMY (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &801533531
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1379,6 +1386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f8971d802ac424cb0a7b708dce8b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   wayPoints: []
   light: {fileID: 0}
   playerFound: 0
@@ -1549,7 +1557,7 @@ GameObject:
   - component: {fileID: 867310061}
   - component: {fileID: 867310060}
   - component: {fileID: 867310059}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ENEMY_CAM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1714,7 +1722,7 @@ GameObject:
   - component: {fileID: 935353227}
   - component: {fileID: 935353226}
   - component: {fileID: 935353225}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ENEMY_CAM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1830,13 +1838,13 @@ GameObject:
   - component: {fileID: 1241460207}
   - component: {fileID: 1241460206}
   - component: {fileID: 1241460205}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ENEMY (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1241460205
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1863,6 +1871,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f8971d802ac424cb0a7b708dce8b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   wayPoints: []
   light: {fileID: 0}
   playerFound: 0
@@ -2001,7 +2010,7 @@ GameObject:
   - component: {fileID: 1256593956}
   - component: {fileID: 1256593955}
   - component: {fileID: 1256593954}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ENEMY_CAM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2166,7 +2175,7 @@ GameObject:
   - component: {fileID: 1306896499}
   - component: {fileID: 1306896498}
   - component: {fileID: 1306896497}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ENEMY_CAM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2530,7 +2539,7 @@ GameObject:
   - component: {fileID: 1597449848}
   - component: {fileID: 1597449847}
   - component: {fileID: 1597449846}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ENEMY_CAM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2611,7 +2620,7 @@ GameObject:
   - component: {fileID: 1667726505}
   - component: {fileID: 1667726504}
   - component: {fileID: 1667726503}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ENEMY_CAM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3514,13 +3523,13 @@ GameObject:
   - component: {fileID: 2135915056}
   - component: {fileID: 2135915055}
   - component: {fileID: 2135915054}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ENEMY (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &2135915054
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3547,6 +3556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f8971d802ac424cb0a7b708dce8b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   wayPoints: []
   light: {fileID: 0}
   playerFound: 0

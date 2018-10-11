@@ -7,6 +7,8 @@ using Random = UnityEngine.Random;
 
 public class ENEMY_AI : MonoBehaviour {
 
+    [SerializeField] PLAYER_MOV player;
+
     Camera view;
     [SerializeField] GameObject[] wayPoints;
     private GameObject wayPoint;
@@ -70,6 +72,9 @@ public class ENEMY_AI : MonoBehaviour {
         // SETUP PLAYER COLLISION
         objectCollision = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider>();
         waypointsSpawned = false;
+
+        // OBTAIN PLAYER's SCRIPT
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PLAYER_MOV>();
     }
 	
 	void Update () {
