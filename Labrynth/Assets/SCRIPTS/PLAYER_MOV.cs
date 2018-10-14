@@ -65,7 +65,7 @@ public class PLAYER_MOV : MonoBehaviour {
         int enemyLayer = 1 << LayerMask.NameToLayer("enemy");
         if (moving){
             if (Input.GetKey(KeyCode.LeftShift)){
-                maxCol = 3.5f;
+                maxCol = 2.5f;
                 maxSpeed = walkSpeed;
                 waitTime += Time.deltaTime * .25f;
 
@@ -79,7 +79,7 @@ public class PLAYER_MOV : MonoBehaviour {
                 }
             }
             else{
-                maxCol = 9.5f;
+                maxCol = 5.5f;
                 maxSpeed = defaultSpeed;
                 waitTime += Time.deltaTime * .5f;
 
