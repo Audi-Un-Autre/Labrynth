@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 63670701}
   m_Layer: 8
   m_Name: ENEMY (4)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -330,6 +330,7 @@ MonoBehaviour:
   wayPoints: []
   light: {fileID: 0}
   playerFound: 0
+  playerHeard: 0
 --- !u!195 &63670703
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -743,7 +744,7 @@ GameObject:
   - component: {fileID: 258383712}
   m_Layer: 8
   m_Name: ENEMY
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -887,6 +888,7 @@ MonoBehaviour:
   wayPoints: []
   light: {fileID: 0}
   playerFound: 0
+  playerHeard: 0
 --- !u!54 &258383712
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -919,7 +921,7 @@ GameObject:
   - component: {fileID: 356482106}
   m_Layer: 8
   m_Name: ENEMY (2)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -954,6 +956,7 @@ MonoBehaviour:
   wayPoints: []
   light: {fileID: 0}
   playerFound: 0
+  playerHeard: 0
 --- !u!195 &356482108
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1095,7 +1098,7 @@ GameObject:
   - component: {fileID: 479435856}
   m_Layer: 8
   m_Name: ENEMY (6)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1130,6 +1133,7 @@ MonoBehaviour:
   wayPoints: []
   light: {fileID: 0}
   playerFound: 0
+  playerHeard: 0
 --- !u!195 &479435858
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1355,7 +1359,7 @@ GameObject:
   - component: {fileID: 801533531}
   m_Layer: 8
   m_Name: ENEMY (5)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1390,6 +1394,7 @@ MonoBehaviour:
   wayPoints: []
   light: {fileID: 0}
   playerFound: 0
+  playerHeard: 0
 --- !u!195 &801533533
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1840,7 +1845,7 @@ GameObject:
   - component: {fileID: 1241460205}
   m_Layer: 8
   m_Name: ENEMY (1)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1875,6 +1880,7 @@ MonoBehaviour:
   wayPoints: []
   light: {fileID: 0}
   playerFound: 0
+  playerHeard: 0
 --- !u!195 &1241460207
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3525,7 +3531,7 @@ GameObject:
   - component: {fileID: 2135915054}
   m_Layer: 8
   m_Name: ENEMY (3)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3560,6 +3566,7 @@ MonoBehaviour:
   wayPoints: []
   light: {fileID: 0}
   playerFound: 0
+  playerHeard: 0
 --- !u!195 &2135915056
 NavMeshAgent:
   m_ObjectHideFlags: 0

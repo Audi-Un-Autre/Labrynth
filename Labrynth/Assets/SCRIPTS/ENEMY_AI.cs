@@ -13,13 +13,13 @@ public class ENEMY_AI : MonoBehaviour {
     [SerializeField] GameObject[] wayPoints;
     private GameObject wayPoint;
     NavMeshAgent nav;
-    [SerializeField] Light light;
+    Light light;
 
     Vector3 destination;
     Vector3 playerDestination;
     Vector3 randDirection;
     Vector3 lastSeen;
-
+    Vector3 heardAt;
     Quaternion look;
 
     private Plane[] geoPlanes;
@@ -48,9 +48,13 @@ public class ENEMY_AI : MonoBehaviour {
     float lookTime = 0f;
     float maxLookTime = 3f;
     float wait = 0f;
+    float hearTime = 0f;
+    float maxHearTime = 2f;
     int currentPoint = 0;
     bool timeReached = false;
     bool waypointsSpawned;
+    bool locationCaptured;
+    [SerializeField] bool playerHeard;
 
 	void Start () {
         // GRAB COMPONENTS
@@ -78,6 +82,18 @@ public class ENEMY_AI : MonoBehaviour {
     }
 	
 	void Update () {
+
+        // SEE WHICH ENEMY IS DETECTING PLAYER SOUND
+        foreach (Collider enemy in player.hitColliders){
+            playerHeard = true;
+            state = GameState.ALERTED;
+            Debug.Log(enemy.name + " HAS HEARD THE PLAYER.");
+            heardAt = player.transform.position;
+            if (!locationCaptured){
+                heardAt = player.transform.position;
+                locationCaptured = true;
+            }
+        }
 
         /*
          * 
@@ -116,43 +132,69 @@ public class ENEMY_AI : MonoBehaviour {
                 break;
 
             case GameState.ALERTED:
-                // IDLE AT THE SPOT
-
                 light.color = Color.yellow;
-                waitTime += Time.deltaTime;
-                if (waitTime >= maxTime)
-                {
-                    timeReached = true;
-                    waitTime = 0;
-                    destinationSet = false;
-                    wait = 0;
-                    state = GameState.PATROL;
+                // go to spot heard
+                if (playerHeard && !CheckForPlayer()){
+                    Chasing(heardAt);
+                    if (!destinationSet){ // "arrived at location"
+                        locationCaptured = false;
+                        playerHeard = false;
+                        light.color = Color.yellow;
+                        waitTime += Time.deltaTime;
+                        if (waitTime >= maxTime)
+                        {
+                            timeReached = true;
+                            waitTime = 0;
+                            destinationSet = false;
+                            wait = 0;
+                            state = GameState.PATROL;
+                        }
+                        else if (waitTime < maxTime)
+                        {
+                            timeReached = false;
+                            if (!CheckForPlayer() && !timeReached)
+                                Alerted();
+                            else if (CheckForPlayer() && !timeReached)
+                            {
+                                waitTime = 0;
+                                destinationSet = false;
+                                wait = 0;
+                                state = GameState.CHASING;
+                            }
+                        }
+                    }
                 }
-                else if (waitTime < maxTime)
-                {
-                    timeReached = false;
-                    if (!CheckForPlayer() && !timeReached)
-                        Alerted();
-                    else if (CheckForPlayer() && !timeReached)
-                    {
+                else{
+                    waitTime += Time.deltaTime;
+                    if (waitTime >= maxTime){
+                        timeReached = true;
                         waitTime = 0;
                         destinationSet = false;
                         wait = 0;
-                        state = GameState.CHASING;
+                        state = GameState.PATROL;
+                    }
+                    else if (waitTime < maxTime){
+                        timeReached = false;
+                        if (!CheckForPlayer() && !timeReached)
+                            Alerted();
+                        else if (CheckForPlayer() && !timeReached){
+                            waitTime = 0;
+                            destinationSet = false;
+                            wait = 0;
+                            state = GameState.CHASING;
+                        }
                     }
                 }
 
                 // LOOK AROUND FOR PLAYER
                 wait += Time.deltaTime;
                 lookTime += Time.deltaTime;
-                if (lookTime >= maxLookTime)
-                {
+                if (lookTime >= maxLookTime){
                     look = Quaternion.Euler(new Vector3(0f, Random.Range(-180f, 180f), 0f));
                     lookTime = 0;
                 }
                 // CONTINUE LOOKING IN DIRECTION LAST SEEN PLAYER FOR 1.5s
-                if (wait > 1.5f)
-                {
+                if (wait > 1.5f){
                     transform.rotation = Quaternion.Slerp(transform.rotation, look, Time.deltaTime * 5f);
                     transform.Translate(Vector3.forward * ALERT_SPEED * Time.deltaTime);
                 }
@@ -301,12 +343,16 @@ public class ENEMY_AI : MonoBehaviour {
         if (!nav.pathPending){
             if (nav.remainingDistance <= nav.stoppingDistance){
                 if (!nav.hasPath || nav.velocity.sqrMagnitude == 0f){
-                    destinationSet = false;
-                    nav.isStopped = true;
-                    nav.ResetPath();
+                    Stop();
                 }
             }
         }
+    }
+
+    void Stop(){
+        destinationSet = false;
+        nav.isStopped = true;
+        nav.ResetPath();
     }
 
     // TURN AROUND IN A RANDOM DIRECTION WHILE IN PLACE

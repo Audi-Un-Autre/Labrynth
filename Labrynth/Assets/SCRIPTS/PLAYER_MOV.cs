@@ -18,7 +18,7 @@ public class PLAYER_MOV : MonoBehaviour {
     Vector3 playerPosition;
     Vector3 destination;
     [SerializeField] Rigidbody rb;
-    [SerializeField] Collider[] hitColliders;
+    public Collider[] hitColliders;
 
     [SerializeField] bool clicked;
     [SerializeField] float maxSpeed;
@@ -62,6 +62,7 @@ public class PLAYER_MOV : MonoBehaviour {
 
     // DETERMINE SPEEDS AND COLLIDER ABSOLUTES WHEN WALKING OR RUNNING
     private void RunOrWalk(){
+        int enemyLayer = 1 << LayerMask.NameToLayer("enemy");
         if (moving){
             if (Input.GetKey(KeyCode.LeftShift)){
                 maxCol = 3.5f;
@@ -71,11 +72,10 @@ public class PLAYER_MOV : MonoBehaviour {
                 if (radius > maxCol)
                     radius = .5f;
                 else if (waitTime <= maxTime){
-                    if (radius != maxCol){
+                    if (radius != maxCol)
                         radius += colMod;
-                        hitColliders = Physics.OverlapSphere(transform.position, radius, 8);
-                        waitTime = 0;
-                    }
+                    hitColliders = Physics.OverlapSphere(transform.position, radius, enemyLayer);
+                    waitTime = 0;
                 }
             }
             else{
@@ -88,7 +88,7 @@ public class PLAYER_MOV : MonoBehaviour {
                 else if (waitTime <= maxTime){
                     if (radius != maxCol)
                         radius += colMod;
-                    hitColliders = Physics.OverlapSphere(transform.position, radius, 8);
+                    hitColliders = Physics.OverlapSphere(transform.position, radius, enemyLayer);
                     waitTime = 0;
                 }
             }
@@ -98,7 +98,7 @@ public class PLAYER_MOV : MonoBehaviour {
             if (waitTime <= maxTime){
                 if (radius != .5f)
                     radius -= colMod;
-                hitColliders = Physics.OverlapSphere(transform.position, radius, 8);
+                hitColliders = Physics.OverlapSphere(transform.position, radius, enemyLayer);
                 waitTime = 0;
             }
         }
