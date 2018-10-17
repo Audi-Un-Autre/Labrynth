@@ -8,19 +8,39 @@ public class CameraController : MonoBehaviour {
     [SerializeField] private Vector3 offset;
     [SerializeField] private bool useOffsetVals;
     [SerializeField] private float rotateSpeed;
+    float curZoomPos, zoomTo; 
+    float zoomFrom = 20f;
+    public float speedH = 2.0f;
+    public float speedV = 2.0f;
+
+    private float yaw = 0.0f;
+    private float pitch = 0.0f;
+
 
     // Use this for initialization
     void Start ()
     {
+        
+        Cursor.visible = false;
         //Cursor.lockState = CursorLockMode.Locked;
         if (!useOffsetVals)
         {
             offset = target.position - transform.position;
         }
 	}
-	
-	// Update is called once per frame
-	void FixedUpdate ()
+
+    private void Update()
+    {
+        yaw += speedH * Input.GetAxis("Mouse X");
+        pitch -= speedV * Input.GetAxis("Mouse Y");
+
+        transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+    }
+
+
+    
+    // Update is called once per frame
+    void FixedUpdate ()
     {
         //rotates player
         float horizontal = Input.GetAxis("Mouse X") * rotateSpeed;

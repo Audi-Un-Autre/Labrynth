@@ -53,7 +53,7 @@ public class PLAYER_MOV : MonoBehaviour {
         }
 
     }
-
+    
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

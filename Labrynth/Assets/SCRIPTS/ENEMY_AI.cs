@@ -56,12 +56,15 @@ public class ENEMY_AI : MonoBehaviour {
     bool locationCaptured;
     [SerializeField] bool playerHeard;
 
+    Animator anim;
+
 	void Start () {
         // GRAB COMPONENTS
         nav = gameObject.GetComponent<NavMeshAgent>();
         view = gameObject.GetComponentInChildren<Camera>();
         light = GetComponent<Light>();
-        
+        anim = GetComponent<Animator>();
+
         // SET STATE
         state = GameState.IDLE;
         lastState = Time.time;
@@ -78,12 +81,13 @@ public class ENEMY_AI : MonoBehaviour {
         waypointsSpawned = false;
 
         // OBTAIN PLAYER's SCRIPT
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PLAYER_MOV>();
+        //player = GameObject.FindGameObjectWithTag("Player").GetComponent<PLAYER_MOV>();
     }
 	
 	void Update () {
 
         // SEE WHICH ENEMY IS DETECTING PLAYER SOUND
+        /*
         foreach (Collider enemy in player.hitColliders){
             playerHeard = true;
             state = GameState.ALERTED;
@@ -93,7 +97,12 @@ public class ENEMY_AI : MonoBehaviour {
                 heardAt = player.transform.position;
                 locationCaptured = true;
             }
-        }
+        }*/
+
+        if (nav.velocity != Vector3.zero)
+            anim.SetBool("isMoving", true);
+        else
+            anim.SetBool("isMoving", false);
 
         /*
          * 
