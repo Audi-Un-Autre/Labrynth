@@ -28,17 +28,6 @@ public class CameraController : MonoBehaviour {
             offset = target.position - transform.position;
         }
 	}
-
-    private void Update()
-    {
-        yaw += speedH * Input.GetAxis("Mouse X");
-        pitch -= speedV * Input.GetAxis("Mouse Y");
-
-        transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
-    }
-
-
-    
     // Update is called once per frame
     void FixedUpdate ()
     {

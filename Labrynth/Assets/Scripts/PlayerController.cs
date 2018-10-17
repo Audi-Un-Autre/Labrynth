@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour {
     float maxTime = .5f;
     float radius = .5f;
     [SerializeField] float maxSpeed;
+    Rigidbody rb;
+    Vector3 velocity;
 
 
 
@@ -31,19 +33,23 @@ public class PlayerController : MonoBehaviour {
         stopRadius = 2f;
         maxSpeed = defaultSpeed;
         character = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
     }
 
-    private void Update()
+    void Update()
     {
         RunOrWalk();
+        if (rb.velocity.sqrMagnitude < .01  && rb.angularVelocity.sqrMagnitude < .01)
+            moving = false;
+        else
+            moving = true;
     }
 
     // Update is called once per frame
     // *** UPDATE CHANGED FROM LATEUPDATE to FIXEDUPDATE to sync with CAMERACONTROLLER
     void FixedUpdate ()
     {
-
         //Basic attack
         if (Input.GetKey(KeyCode.Mouse0))
         {
@@ -71,7 +77,6 @@ public class PlayerController : MonoBehaviour {
         //Move forward
         if (Input.GetKey(KeyCode.W))
         {
-            moving = true;
             anim.SetBool("isRunning", true);
             movement = (transform.forward * Input.GetAxis("Vertical"));
             movement = movement.normalized * moveSpeed;
@@ -86,14 +91,12 @@ public class PlayerController : MonoBehaviour {
         }
         else
         {
-            moving = false;
             anim.SetBool("isRunning", false);
         }
 
         //Move back
         if (Input.GetKey(KeyCode.S))
         {
-            moving = true;
             anim.SetBool("runBack", true);
             movement = (transform.forward * Input.GetAxis("Vertical"));
             movement = movement.normalized * moveSpeed;
@@ -101,14 +104,12 @@ public class PlayerController : MonoBehaviour {
         }
         else
         {
-            moving = false;
             anim.SetBool("runBack", false);
         }
 
         //Move left
         if (Input.GetKey(KeyCode.A) || (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W)))
         {
-            moving = true;
             anim.SetBool("runLeft", true);
             movement = (transform.right * Input.GetAxis("Horizontal"));
             movement = movement.normalized * moveSpeed;
@@ -116,14 +117,12 @@ public class PlayerController : MonoBehaviour {
         }
         else
         {
-            moving = false;
             anim.SetBool("runLeft", false);
         }
 
         //Move right
         if (Input.GetKey(KeyCode.D) || (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W)))
         {
-            moving = true;
             anim.SetBool("runRight", true);
             movement = (transform.right * Input.GetAxis("Horizontal"));
             movement = movement.normalized * moveSpeed;
@@ -132,9 +131,9 @@ public class PlayerController : MonoBehaviour {
 
         else
         {
-            moving = false;
             anim.SetBool("runRight", false);
         }
+
 
         // rotate cam right and left
         float mouseInput = Input.GetAxis("Mouse X") * moveSpeed;
@@ -157,7 +156,7 @@ public class PlayerController : MonoBehaviour {
         {
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                maxCol = 2.5f;
+                maxCol = 5.5f;
                 waitTime += Time.deltaTime * .25f;
 
                 if (radius > maxCol)
@@ -172,7 +171,7 @@ public class PlayerController : MonoBehaviour {
             }
             else
             {
-                maxCol = 5.5f;
+                maxCol = 3.5f;
                 waitTime += Time.deltaTime * .5f;
 
                 if (radius > maxCol)
