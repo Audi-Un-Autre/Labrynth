@@ -18,7 +18,8 @@ public class PlayerController : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void LateUpdate ()
+    // *** UPDATE CHANGED FROM LATEUPDATE to FIXEDUPDATE to sync with CAMERACONTROLLER
+	void FixedUpdate ()
     {
         //Basic attack
         if (Input.GetKey(KeyCode.Mouse0))
@@ -81,7 +82,7 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetKey(KeyCode.A) || (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W)))
         {
             anim.SetBool("runLeft", true);
-            movement = (transform.right * -Input.GetAxis("Horizontal"));
+            movement = (transform.right * Input.GetAxis("Horizontal"));
             movement = movement.normalized * moveSpeed;
             character.Move(movement * Time.deltaTime);
         }
@@ -94,7 +95,7 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetKey(KeyCode.D) || (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W)))
         {
             anim.SetBool("runRight", true);
-            movement = (transform.right * -Input.GetAxis("Horizontal"));
+            movement = (transform.right * Input.GetAxis("Horizontal"));
             movement = movement.normalized * moveSpeed;
             character.Move(movement * Time.deltaTime);
         }
