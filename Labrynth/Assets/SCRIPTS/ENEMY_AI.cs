@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class ENEMY_AI : MonoBehaviour {
 
-    [SerializeField] PLAYER_MOV player;
+    [SerializeField] PlayerController player;
 
     Camera view;
     [SerializeField] GameObject[] wayPoints;
@@ -19,15 +19,15 @@ public class ENEMY_AI : MonoBehaviour {
     Vector3 playerDestination;
     Vector3 randDirection;
     Vector3 lastSeen;
-    Vector3 heardAt;
+    public Vector3 heardAt;
     Quaternion look;
 
     private Plane[] geoPlanes;
     private Collider objectCollision;
     Rigidbody rb;
 
-    enum GameState {IDLE, ALERTED, CHASING, PATROL, ATTACKING, DEATH};
-    GameState state;
+    public enum GameState {IDLE, ALERTED, CHASING, PATROL, ATTACKING, DEATH};
+    public GameState state;
 
     float lastState = 0.0f;
     private bool destinationSet;
@@ -54,7 +54,7 @@ public class ENEMY_AI : MonoBehaviour {
     bool timeReached = false;
     bool waypointsSpawned;
     bool locationCaptured;
-    [SerializeField] bool playerHeard;
+    public bool playerHeard;
 
     Animator anim;
 
@@ -81,23 +81,10 @@ public class ENEMY_AI : MonoBehaviour {
         waypointsSpawned = false;
 
         // OBTAIN PLAYER's SCRIPT
-        //player = GameObject.FindGameObjectWithTag("Player").GetComponent<PLAYER_MOV>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
     }
 	
 	void Update () {
-
-        // SEE WHICH ENEMY IS DETECTING PLAYER SOUND
-        /*
-        foreach (Collider enemy in player.hitColliders){
-            playerHeard = true;
-            state = GameState.ALERTED;
-            Debug.Log(enemy.name + " HAS HEARD THE PLAYER.");
-            heardAt = player.transform.position;
-            if (!locationCaptured){
-                heardAt = player.transform.position;
-                locationCaptured = true;
-            }
-        }*/
 
         if (nav.velocity != Vector3.zero)
             anim.SetBool("isMoving", true);
@@ -146,7 +133,7 @@ public class ENEMY_AI : MonoBehaviour {
                 if (playerHeard && !CheckForPlayer()){
                     Chasing(heardAt);
                     if (!destinationSet){ // "arrived at location"
-                        locationCaptured = false;
+                        //locationCaptured = false;
                         playerHeard = false;
                         light.color = Color.yellow;
                         waitTime += Time.deltaTime;
@@ -335,7 +322,7 @@ public class ENEMY_AI : MonoBehaviour {
 
     void CheckDestination(){
 
-        if (waypointsSpawned){
+        if (waypointsSpawned && wayPoints[currentPoint] != null){
             // CHECK IF PATH IS PATHABLE, ex: waypoint spawned in an obstacle means waypoint is not pathable
             Vector3 spawnLocation = wayPoints[currentPoint].transform.position;
             NavMeshPath path = new NavMeshPath();

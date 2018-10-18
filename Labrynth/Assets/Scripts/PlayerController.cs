@@ -24,11 +24,13 @@ public class PlayerController : MonoBehaviour {
     Rigidbody rb;
     Vector3 velocity;
 
-
+    ENEMY_AI thisEnemy;
+    int enemyLayer;
 
     // Use this for initialization
     void Start ()
     {
+        enemyLayer = 1 << LayerMask.NameToLayer("enemy");
         walkSpeed = 6f;
         stopRadius = 2f;
         maxSpeed = defaultSpeed;
@@ -40,10 +42,11 @@ public class PlayerController : MonoBehaviour {
     void Update()
     {
         RunOrWalk();
-        if (rb.velocity.sqrMagnitude < .01  && rb.angularVelocity.sqrMagnitude < .01)
-            moving = false;
-        else
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
             moving = true;
+        else
+            moving = false;
+
     }
 
     // Update is called once per frame
@@ -75,7 +78,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         //Move forward
-        if (Input.GetKey(KeyCode.W))
+            if (Input.GetKey(KeyCode.W))
         {
             anim.SetBool("isRunning", true);
             movement = (transform.forward * Input.GetAxis("Vertical"));
@@ -151,12 +154,11 @@ public class PlayerController : MonoBehaviour {
     // DETERMINE SPEEDS AND COLLIDER ABSOLUTES WHEN WALKING OR RUNNING
     private void RunOrWalk()
     {
-        int enemyLayer = 1 << LayerMask.NameToLayer("enemy");
         if (moving)
         {
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                maxCol = 5.5f;
+                maxCol = 5f;
                 waitTime += Time.deltaTime * .25f;
 
                 if (radius > maxCol)
@@ -171,7 +173,7 @@ public class PlayerController : MonoBehaviour {
             }
             else
             {
-                maxCol = 3.5f;
+                maxCol = 2f;
                 waitTime += Time.deltaTime * .5f;
 
                 if (radius > maxCol)
@@ -198,9 +200,15 @@ public class PlayerController : MonoBehaviour {
         }
 
         // SEE WHICH ENEMY IS DETECTING PLAYER SOUND
-        foreach (Collider enemy in hitColliders)
-            Debug.Log(enemy.gameObject.name);
+        for (var i = 0; i < hitColliders.Length; i++){
+            Debug.Log(hitColliders[i].gameObject.name);
+            thisEnemy = hitColliders[i].GetComponent<ENEMY_AI>();
+            thisEnemy.playerHeard = true;
+            thisEnemy.state = ENEMY_AI.GameState.ALERTED;
+            thisEnemy.heardAt = this.transform.position;
+        }
     }
+
 }
 
 // 2. Sword push enemies
