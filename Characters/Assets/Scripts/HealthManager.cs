@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class HealthManager : MonoBehaviour {
 
-    [SerializeField] private float maxHealth;
-    [SerializeField] private float currHealth;
+    private static float maxHealth;
+    private static float currHealth;
 
 	// Use this for initialization
 	void Start () {
+        maxHealth = 10;
         currHealth = maxHealth;
 	}
 	
@@ -17,12 +18,13 @@ public class HealthManager : MonoBehaviour {
 		
 	}
 
-    public void HurtPlayer(int damage)
+    public static void HurtPlayer(int damage)
     {
         currHealth -= damage;
+        print("Current health is: " + currHealth);
     }
 
-    public void HealPlayer(int healAmount)
+    public static void HealPlayer(int healAmount)
     {
         currHealth += healAmount;
         if (currHealth > maxHealth)

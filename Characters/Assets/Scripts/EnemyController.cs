@@ -10,6 +10,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float detectionDistance;
     [SerializeField] private float attackDistance;
     [SerializeField] Rigidbody rb;
+    [SerializeField] private int damage = 1;
     static Animator anim;
 
     // Use this for initialization
@@ -54,5 +55,10 @@ public class EnemyController : MonoBehaviour
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
         }
+    }
+
+    public void RegisterHit ()
+    {
+        HealthManager.HurtPlayer(damage);
     }
 }
