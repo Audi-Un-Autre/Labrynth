@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,9 @@ public class PlayerController : MonoBehaviour {
 
     [SerializeField] private float moveSpeed;
     [SerializeField] private float runMultiplier;
+    [SerializeField] private int damage = 1;
+    private static float maxHealth;
+    private static float currHealth;
     private CharacterController character;
     private Vector3 movement;
     static Animator anim;
@@ -13,6 +17,8 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+        maxHealth = 10;
+        currHealth = maxHealth;
         character = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
     }
@@ -102,10 +108,42 @@ public class PlayerController : MonoBehaviour {
         {
             anim.SetBool("runRight", false);
         }
+
+        if(currHealth <= 0)
+        {
+            anim.SetBool("isDead", true);
+            moveSpeed = 0.0f;
+        }
+    }
+
+    public static void HurtPlayer(int damage)
+    {
+        currHealth -= damage;
+        print("Current health is: " + currHealth);
+        //takeDamage();
+        //anim.SetBool("isHit", false);
+    }
+
+    private static void takeDamage()
+    {
+        anim.SetBool("isHit", true);
+    }
+
+    public static void HealPlayer(int healAmount)
+    {
+        currHealth += healAmount;
+        if (currHealth > maxHealth)
+        {
+            currHealth = maxHealth;
+        }
+
+    }
+
+    public void EnemyHit()
+    {
+        EnemyController.HurtEnemy(damage);
     }
 }
 
 // 2. Sword push enemies
-// 3. When character heavy attacks neeeds to stay in position on finish
-// 4. Set animation using trigger
 // 6. Stop moving when attacking

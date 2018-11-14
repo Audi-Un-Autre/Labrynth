@@ -11,12 +11,16 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float attackDistance;
     [SerializeField] Rigidbody rb;
     [SerializeField] private int damage = 1;
+    private static float maxHealth;
+    private static float currHealth;
     static Animator anim;
 
     // Use this for initialization
     void Start()
     {
         anim = GetComponent<Animator>();
+        maxHealth = 3;
+        currHealth = maxHealth;
     }
 
     // Update is called once per frame
@@ -55,10 +59,24 @@ public class EnemyController : MonoBehaviour
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
         }
+
+        if (currHealth <= 0)
+        {
+            anim.SetBool("isDead", true);
+            moveSpeed = 0.0f;
+        }
     }
 
     public void RegisterHit ()
     {
-        HealthManager.HurtPlayer(damage);
+        PlayerController.HurtPlayer(damage);
+    }
+
+    public static void HurtEnemy(int damage)
+    {
+        currHealth -= damage;
+        print("Enemy health is: " + currHealth);
+        //takeDamage();
+        //anim.SetBool("isHit", false);
     }
 }
