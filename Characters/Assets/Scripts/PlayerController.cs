@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float moveSpeed;
     [SerializeField] private float runMultiplier;
     [SerializeField] private int damage = 1;
+    [SerializeField] private int attackDistance;
     private static float maxHealth;
     private static float currHealth;
     private CharacterController character;
@@ -143,6 +144,24 @@ public class PlayerController : MonoBehaviour {
     {
         EnemyController.HurtEnemy(damage);
     }
+
+    /*Transform GetClosestEnemy (Transform[] enemies)
+    {
+        Transform closetsEnemy = null;
+        float shortestDistance = Mathf.Infinity;
+        Vector3 currPos = transform.position;
+        foreach(Transform potentialTarget in enemies)
+        {
+            Vector3 target = potentialTarget.position - currPos;
+            float targetDistance = target.sqrMagnitude;
+            if(targetDistance < shortestDistance)
+            {
+                shortestDistance = targetDistance;
+                closetsEnemy = potentialTarget;
+            }
+        }
+        return closetsEnemy;
+    }*/
 }
 
 // 2. Sword push enemies

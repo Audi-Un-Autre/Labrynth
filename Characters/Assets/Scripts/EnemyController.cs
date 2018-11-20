@@ -8,7 +8,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private Transform enemy;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float detectionDistance;
-    [SerializeField] private float attackDistance;
+    [SerializeField] private int attackDistance;
     [SerializeField] Rigidbody rb;
     [SerializeField] private int damage = 1;
     private static float maxHealth;
@@ -69,7 +69,14 @@ public class EnemyController : MonoBehaviour
 
     public void RegisterHit ()
     {
-        PlayerController.HurtPlayer(damage);
+        if (Vector3.Distance(target.position, this.transform.position) < detectionDistance)
+        {
+            Vector3 direction = target.position - enemy.position;
+            if (direction.magnitude < attackDistance)
+            {
+                PlayerController.HurtPlayer(damage);
+            }
+        }
     }
 
     public static void HurtEnemy(int damage)
