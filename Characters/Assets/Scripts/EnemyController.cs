@@ -19,7 +19,7 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-        maxHealth = 3;
+        maxHealth = 5;
         currHealth = maxHealth;
     }
 
@@ -79,11 +79,11 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public static void HurtEnemy(int damage)
+    public static void HurtEnemy(int damage, GameObject character)
     {
         currHealth -= damage;
-        print("Enemy health is: " + currHealth);
+        print(character + " health is: " + currHealth);
         //takeDamage();
         //anim.SetBool("isHit", false);
-    }
+   }
 }

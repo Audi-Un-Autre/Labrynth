@@ -8,7 +8,10 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float moveSpeed;
     [SerializeField] private float runMultiplier;
     [SerializeField] private int damage = 1;
-    [SerializeField] private int attackDistance;
+    [SerializeField] private float attackDistance;
+    [SerializeField] private GameObject[] enemies;
+    private Transform target;
+    private float distance;
     private static float maxHealth;
     private static float currHealth;
     private CharacterController character;
@@ -16,39 +19,40 @@ public class PlayerController : MonoBehaviour {
     static Animator anim;
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         maxHealth = 10;
         currHealth = maxHealth;
         character = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
+        enemies = GameObject.FindGameObjectsWithTag("NPC");
     }
-	
-	// Update is called once per frame
-	void LateUpdate ()
+
+    // Update is called once per frame
+    void LateUpdate()
     {
         //Basic attack
         if (Input.GetKey(KeyCode.Mouse0))
         {
             anim.SetBool("isAttacking", true);
-            /**/moveSpeed = 0.0f;
+            moveSpeed = 6.0f;
         }
         else
         {
             anim.SetBool("isAttacking", false);
-            /**/moveSpeed = 6.0f;
+            moveSpeed = 6.0f;
         }
 
         //Heavy attack
         if (Input.GetKey(KeyCode.Mouse1))
         {
             anim.SetBool("HeavyAttack", true);
-            /**/moveSpeed = 0.0f;
+            moveSpeed = 0.0f;
         }
         else
         {
             anim.SetBool("HeavyAttack", false);
-            /**/moveSpeed = 6.0f;
+            moveSpeed = 6.0f;
         }
 
         //Move forward
@@ -58,7 +62,7 @@ public class PlayerController : MonoBehaviour {
             movement = (transform.forward * Input.GetAxis("Vertical"));
             movement = movement.normalized * moveSpeed;
             character.Move(movement * Time.deltaTime);
-            if(Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             {
                 anim.SetBool("isRunning", true);
                 movement = (transform.forward * Input.GetAxis("Vertical"));
@@ -110,7 +114,7 @@ public class PlayerController : MonoBehaviour {
             anim.SetBool("runRight", false);
         }
 
-        if(currHealth <= 0)
+        if (currHealth <= 0)
         {
             anim.SetBool("isDead", true);
             moveSpeed = 0.0f;
@@ -142,26 +146,23 @@ public class PlayerController : MonoBehaviour {
 
     public void EnemyHit()
     {
-        EnemyController.HurtEnemy(damage);
-    }
-
-    /*Transform GetClosestEnemy (Transform[] enemies)
-    {
-        Transform closetsEnemy = null;
-        float shortestDistance = Mathf.Infinity;
-        Vector3 currPos = transform.position;
-        foreach(Transform potentialTarget in enemies)
+        GameObject closestEnemy = enemies[0];
+        float dist = Vector3.Distance(transform.position, enemies[0].transform.position);
+        for (int i = 0; i < enemies.Length; i++)
         {
-            Vector3 target = potentialTarget.position - currPos;
-            float targetDistance = target.sqrMagnitude;
-            if(targetDistance < shortestDistance)
+            var tempDistance = Vector3.Distance(transform.position, enemies[i].transform.position);
+            if(tempDistance < dist)
             {
-                shortestDistance = targetDistance;
-                closetsEnemy = potentialTarget;
+                closestEnemy = enemies[i];
             }
         }
-        return closetsEnemy;
-    }*/
+        var enDis = Vector3.Distance(transform.position, closestEnemy.transform.position);
+        print(closestEnemy);
+        if(enDis <= attackDistance)
+        {
+            EnemyController.HurtEnemy(damage, closestEnemy);
+        }
+    }
 }
 
 // 2. Sword push enemies
