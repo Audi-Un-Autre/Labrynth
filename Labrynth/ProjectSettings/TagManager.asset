@@ -9,6 +9,8 @@ TagManager:
   - Waypoint
   - Obstacle
   - Enemy
+  - Potion
+  - Food
   layers:
   - Default
   - TransparentFX

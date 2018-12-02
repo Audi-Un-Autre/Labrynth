@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+
     [SerializeField] private float moveSpeed;
     [SerializeField] private float runMultiplier;
     private CharacterController character;

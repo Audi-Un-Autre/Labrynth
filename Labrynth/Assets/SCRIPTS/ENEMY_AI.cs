@@ -12,7 +12,7 @@ public class ENEMY_AI : MonoBehaviour {
     Camera view;
     [SerializeField] GameObject[] wayPoints;
     private GameObject wayPoint;
-    NavMeshAgent nav;
+    public NavMeshAgent nav;
     Light light;
 
     Vector3 destination;
