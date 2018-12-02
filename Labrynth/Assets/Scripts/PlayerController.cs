@@ -47,7 +47,6 @@ public class PlayerController : MonoBehaviour {
             moving = true;
         else
             moving = false;
-
     }
 
     // Update is called once per frame
