@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class HealthManager : MonoBehaviour {
 
-    [SerializeField] private float maxHealth;
-    [SerializeField] private float currHealth;
+    public float maxHealth;
+    public float currHealth;
 
 	// Use this for initialization
 	void Start () {
-        currHealth = maxHealth;
+        currHealth = 10;
 	}
 	
 	// Update is called once per frame
@@ -21,6 +21,7 @@ public class HealthManager : MonoBehaviour {
     {
         currHealth -= damage;
     }
+
 
     public void HealPlayer(int healAmount)
     {

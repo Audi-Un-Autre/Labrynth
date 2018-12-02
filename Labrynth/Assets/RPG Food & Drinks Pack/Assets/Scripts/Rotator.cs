@@ -5,7 +5,7 @@ using UnityEngine;
 public class Rotator : MonoBehaviour {
 
     Transform[] weapons;
-    float rotateSpeed = 200f;
+    float rotateSpeed = 150f;
 
 	void Start () {
         weapons = new Transform[transform.childCount];
@@ -16,9 +16,11 @@ public class Rotator : MonoBehaviour {
 	}
 	
 	void Update () {
+
         for (int i = 0; i < weapons.Length; i++)
         {
-            weapons[i].Rotate(Vector3.up * Time.deltaTime * rotateSpeed, Space.World);
+            if (weapons[i] != null)
+                weapons[i].Rotate(Vector3.up * Time.deltaTime * rotateSpeed, Space.World);
         }
 	}
 }

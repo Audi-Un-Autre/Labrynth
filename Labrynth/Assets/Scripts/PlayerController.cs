@@ -47,6 +47,8 @@ public class PlayerController : MonoBehaviour {
             moving = true;
         else
             moving = false;
+
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
