@@ -7,11 +7,21 @@ public class PlayerController : MonoBehaviour {
 
     [SerializeField] private float moveSpeed;
     [SerializeField] private float runMultiplier;
+    [SerializeField] private int damage = 1;
+    [SerializeField] private float attackDistance;
+    [SerializeField] private GameObject[] enemies;
+    private Transform target;
+    private float distance;
+    public static float maxHealth;
+    public static float currHealth;
+    public float trackHealth;
+
     private CharacterController character;
     private Vector3 movement;
     static Animator anim;
     public Collider[] hitColliders;
     [SerializeField] bool moving;
+    public Animation anima;
 
     float defaultSpeed = 12f;
     float colMod = .5f;
@@ -31,7 +41,10 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+        maxHealth = 20;
+        currHealth = 10;
         enemyLayer = 1 << LayerMask.NameToLayer("enemy");
+        enemies = GameObject.FindGameObjectsWithTag("Enemy");
         walkSpeed = 6f;
         stopRadius = 2f;
         maxSpeed = defaultSpeed;
@@ -42,6 +55,7 @@ public class PlayerController : MonoBehaviour {
 
     void Update()
     {
+        trackHealth = currHealth;
         RunOrWalk();
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
             moving = true;
@@ -169,7 +183,7 @@ public class PlayerController : MonoBehaviour {
                 {
                     if (radius != maxCol)
                         radius += colMod;
-                    hitColliders = Physics.OverlapSphere(transform.position, radius, enemyLayer);
+                    //hitColliders = Physics.OverlapSphere(transform.position, radius, enemyLayer);
                     waitTime = 0;
                 }
             }
@@ -184,7 +198,7 @@ public class PlayerController : MonoBehaviour {
                 {
                     if (radius != maxCol)
                         radius += colMod;
-                    hitColliders = Physics.OverlapSphere(transform.position, radius, enemyLayer);
+                    //hitColliders = Physics.OverlapSphere(transform.position, radius, enemyLayer);
                     waitTime = 0;
                 }
             }
@@ -196,10 +210,11 @@ public class PlayerController : MonoBehaviour {
             {
                 if (radius != .5f)
                     radius -= colMod;
-                hitColliders = Physics.OverlapSphere(transform.position, radius, enemyLayer);
+                //hitColliders = Physics.OverlapSphere(transform.position, radius, enemyLayer);
                 waitTime = 0;
             }
         }
+        hitColliders = Physics.OverlapSphere(transform.position, radius, enemyLayer);
 
         // SEE WHICH ENEMY IS DETECTING PLAYER SOUND
         for (var i = 0; i < hitColliders.Length; i++){
@@ -208,6 +223,49 @@ public class PlayerController : MonoBehaviour {
             thisEnemy.playerHeard = true;
             thisEnemy.state = ENEMY_AI.GameState.ALERTED;
             thisEnemy.heardAt = this.transform.position;
+        }
+    }
+
+    private static void takeDamage()
+    {
+        anim.SetBool("isHit", true);
+    }
+
+    public static void HealPlayer(int healAmount)
+    {
+        currHealth += healAmount;
+        if (currHealth > maxHealth)
+        {
+            currHealth = maxHealth;
+        }
+
+    }
+
+    public static void HurtPlayer(int damage)
+    {
+        currHealth -= damage;
+        print("Current health is: " + currHealth);
+        //takeDamage();
+        //anim.SetBool("isHit", false);
+    }
+
+    public void EnemyHit()
+    {
+        GameObject closestEnemy = enemies[0];
+        float dist = Vector3.Distance(transform.position, enemies[0].transform.position);
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            var tempDistance = Vector3.Distance(transform.position, enemies[i].transform.position);
+            if (tempDistance < dist)
+            {
+                closestEnemy = enemies[i];
+            }
+        }
+        var enDis = Vector3.Distance(transform.position, closestEnemy.transform.position);
+        print(closestEnemy);
+        if (enDis <= attackDistance)
+        {
+            EnemyController.HurtEnemy(damage, closestEnemy);
         }
     }
 

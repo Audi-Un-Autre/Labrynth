@@ -4,34 +4,59 @@ using UnityEngine;
 
 public class CONSUME : MonoBehaviour {
 
-    public HealthManager health;
+    public PlayerController track;
     private int healthAmt = 5;
     private int foodAmt = 1;
     public bool consumed = false;
+    
 
     private void OnTriggerStay(Collider col)
     {
         if (!consumed){
             //POTION
             if (col.transform.tag == "Potion" && Input.GetKeyDown(KeyCode.E)){ 
-                if (health.currHealth != health.maxHealth && !(health.currHealth + healthAmt > health.maxHealth)){
+                if (PlayerController.currHealth != PlayerController.maxHealth && !(PlayerController.currHealth + healthAmt > PlayerController.maxHealth)){
                     consumed = true;
-                    health.currHealth += healthAmt;
+                    PlayerController.currHealth += healthAmt;
                     Destroy(col.gameObject);
                 }
                 else
                     Debug.Log("HEALTH FULL");
+
+                /*
+                // TRACK HEALTH TEST
+                if (track.trackHealth != PlayerController.maxHealth && !(track.trackHealth + healthAmt > PlayerController.maxHealth))
+                {
+                    consumed = true;
+                    track.trackHealth += healthAmt;
+                    Destroy(col.gameObject);
+                }
+                else
+                    Debug.Log("HEALTH FULL");
+                    */
             }
         
             // FOOD
             if (col.transform.tag == "Food" && Input.GetKeyDown(KeyCode.E)){
-                if (health.currHealth != health.maxHealth && !(health.currHealth + healthAmt > health.maxHealth)){
+                if (PlayerController.currHealth != PlayerController.maxHealth && !(PlayerController.currHealth + foodAmt > PlayerController.maxHealth)){
                     consumed = true;
-                    health.currHealth += foodAmt;
+                    PlayerController.currHealth += foodAmt;
                     Destroy(col.gameObject);
                 }
                 else
                     Debug.Log("HEALTH FULL");
+
+                // TRACK HEALTH TEST
+                /*
+                if (track.trackHealth != PlayerController.maxHealth && !(track.trackHealth + healthAmt > PlayerController.maxHealth))
+                {
+                    consumed = true;
+                    track.trackHealth += foodAmt;
+                    Destroy(col.gameObject);
+                }
+                else
+                    Debug.Log("HEALTH FULL");
+                    */
             }
         }
     }

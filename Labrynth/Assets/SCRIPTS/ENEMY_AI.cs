@@ -8,12 +8,16 @@ using Random = UnityEngine.Random;
 public class ENEMY_AI : MonoBehaviour {
 
     [SerializeField] PlayerController player;
+    [SerializeField] public static float maxHealth;
+    [SerializeField] public static float currHealth;
+    [SerializeField] private int damage = 1;
 
     Camera view;
     [SerializeField] GameObject[] wayPoints;
     private GameObject wayPoint;
     public NavMeshAgent nav;
     Light light;
+    public float trackHealth;
 
     Vector3 destination;
     Vector3 playerDestination;
@@ -82,14 +86,23 @@ public class ENEMY_AI : MonoBehaviour {
 
         // OBTAIN PLAYER's SCRIPT
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+
+        // SET HEALTHS
+        maxHealth = 5;
+        currHealth = maxHealth;
     }
 	
 	void Update () {
+
+        trackHealth = currHealth;
 
         if (nav.velocity != Vector3.zero)
             anim.SetBool("isMoving", true);
         else
             anim.SetBool("isMoving", false);
+
+        if (currHealth <= 0)
+            state = GameState.DEATH;
 
         /*
          * 
@@ -121,7 +134,8 @@ public class ENEMY_AI : MonoBehaviour {
                 light.color = Color.red;
                 if (CheckForPlayer())
                     Chasing(playerDestination);
-                else{
+                else
+                {
                     destinationSet = false;
                     state = GameState.ALERTED;
                 }
@@ -214,13 +228,22 @@ public class ENEMY_AI : MonoBehaviour {
                 }
                 break;
 
-            // HANDLE ATTACK ANIMs AND HP *********************
+            // HANDLE ATTACK ANIMs AND HP 
             case GameState.ATTACKING:
                 light.color = Color.red;
+                // IF PLAYER IS IN FRUSTRUM AND WITHIN DISTANCE, ATTACK
+                if (!CheckForPlayer()){
+                    anim.SetBool("isAttacking", false);
+                    state = GameState.ALERTED;
+                }
+
                 break;
 
-            // HANDLE DEATH ANIMs & MODEL FADEOUT *************
+            // HANDLE DEATH ANIMs & MODEL FADEOUT 
             case GameState.DEATH:
+                anim.SetBool("isDead", true);
+                this.enabled = false;
+                //Destroy(gameObject);
                 break;
         }
     }
@@ -357,6 +380,14 @@ public class ENEMY_AI : MonoBehaviour {
         Debug.Log("STATE: ALERTED.");
     }
 
+    public static void HurtEnemy(int damage, GameObject character)
+    {
+        currHealth -= damage;
+        print(character + " health is: " + currHealth);
+        //takeDamage();
+        //anim.SetBool("isHit", false);
+    }
+
     void Chasing(Vector3 playerPosition){
         Debug.Log("STATE: CHASING.");
         nav.speed = CHASE_SPEED;
@@ -371,6 +402,10 @@ public class ENEMY_AI : MonoBehaviour {
             nav.destination = playerPosition;
             CheckDestination();
         }
+    }
+
+    void Attacking(){
+        anim.SetBool("isAttacking", true);
     }
 
     void SetDestination(Vector3 dest){

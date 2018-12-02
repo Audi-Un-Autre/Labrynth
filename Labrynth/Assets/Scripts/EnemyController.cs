@@ -11,9 +11,11 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private int attackDistance;
     [SerializeField] Rigidbody rb;
     [SerializeField] private int damage = 1;
-    private static float maxHealth;
-    private static float currHealth;
+    [SerializeField] public static float maxHealth;
+    [SerializeField] public static float currHealth;
     static Animator anim;
+
+    ENEMY_AI ai;
 
     // Use this for initialization
     void Start()
@@ -31,24 +33,27 @@ public class EnemyController : MonoBehaviour
             Vector3 direction = target.position - enemy.position;
             if (direction.magnitude < attackDistance) // RADIUS OF SATISFACTION
             {
-                enemy.Translate(0.0f, 0.0f, 0.0f);
                 anim.SetBool("isAttacking", true);
                 anim.SetBool("isMoving", false);
+                //enemy.Translate(0.0f, 0.0f, 0.0f);
                 // STOP MOVEMENT
-                rb.velocity = Vector3.zero;
-                rb.angularVelocity = Vector3.zero;
+                //rb.velocity = Vector3.zero;
+                //rb.angularVelocity = Vector3.zero;
 
             }
             else if (direction.magnitude > attackDistance && !anim.GetCurrentAnimatorStateInfo(0).IsName("attack"))
             {
                 anim.SetBool("isMoving", true);
+                anim.SetBool("isAttacking", false);
                 // START MOVEMENT
+                /*
+                 * THIS IS HANDLED IN THE ENEMY AI
                 direction.Normalize();
                 direction *= moveSpeed;
                 rb.velocity = direction;
                 this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(direction), 0.1f);
                 anim.SetBool("isMoving", true);
-                anim.SetBool("isAttacking", false);
+                */
             }
         }
         else
@@ -56,8 +61,11 @@ public class EnemyController : MonoBehaviour
             anim.SetBool("isMoving", false);
             anim.SetBool("isAttacking", false);
             // STOP MOVEMENT
+            /* 
+             * THIS IS HANDLED IN THE ENEMY AI
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
+            */
         }
 
         if (currHealth <= 0)
@@ -66,7 +74,7 @@ public class EnemyController : MonoBehaviour
             moveSpeed = 0.0f;
         }
     }
-
+    /*
     public void RegisterHit()
     {
         if (Vector3.Distance(target.position, this.transform.position) < detectionDistance)
@@ -78,7 +86,7 @@ public class EnemyController : MonoBehaviour
             }
         }
     }
-
+    */
     public static void HurtEnemy(int damage, GameObject character)
     {
         currHealth -= damage;
