@@ -8,14 +8,19 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private Transform enemy;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float detectionDistance;
-    [SerializeField] private float attackDistance;
+    [SerializeField] private int attackDistance;
     [SerializeField] Rigidbody rb;
+    [SerializeField] private int damage = 1;
+    private static float maxHealth;
+    private static float currHealth;
     static Animator anim;
 
     // Use this for initialization
     void Start()
     {
         anim = GetComponent<Animator>();
+        maxHealth = 5;
+        currHealth = maxHealth;
     }
 
     // Update is called once per frame
@@ -54,5 +59,31 @@ public class EnemyController : MonoBehaviour
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
         }
+
+        if (currHealth <= 0)
+        {
+            anim.SetBool("isDead", true);
+            moveSpeed = 0.0f;
+        }
+    }
+
+    public void RegisterHit()
+    {
+        if (Vector3.Distance(target.position, this.transform.position) < detectionDistance)
+        {
+            Vector3 direction = target.position - enemy.position;
+            if (direction.magnitude < attackDistance)
+            {
+                PlayerController.HurtPlayer(damage);
+            }
+        }
+    }
+
+    public static void HurtEnemy(int damage, GameObject character)
+    {
+        currHealth -= damage;
+        print(character + " health is: " + currHealth);
+        //takeDamage();
+        //anim.SetBool("isHit", false);
     }
 }
