@@ -14,7 +14,9 @@ public class HealthManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (currHealth == 0){ 
+            //GO TO MAIN MENU
+        }
 	}
 
     public void HurtPlayer(int damage)
