@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
 
-    [SerializeField] string newGame;
+    public GameObject pause;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -13,12 +14,15 @@ public class MainMenu : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
 
-    public void NewGame()
+        }
+    }
+
+    public void NewGame(string scene)
     {
-        SceneManager.LoadScene(newGame);
+        SceneManager.LoadScene(scene);
     }
 
     public void QuitGame()
