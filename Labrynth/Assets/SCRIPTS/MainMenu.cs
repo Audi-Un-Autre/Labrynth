@@ -5,19 +5,20 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
 
-    public GameObject pause;
-
 	// Use this for initialization
 	void Start () {
 		
 	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
 
-        }
+    private void Awake()
+    {
+        Cursor.visible = true;
+        Time.timeScale = 1f;
+    }
+
+    // Update is called once per frame
+    void Update () {
+
     }
 
     public void NewGame(string scene)

@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour {
     ENEMY_AI thisEnemy;
     int enemyLayer;
 
+   
     // Use this for initialization
     void Start ()
     {
@@ -53,6 +54,7 @@ public class PlayerController : MonoBehaviour {
 
     void Update()
     {
+
         RunOrWalk();
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)){
             moving = true;

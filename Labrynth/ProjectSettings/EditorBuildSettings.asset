@@ -9,12 +9,15 @@ EditorBuildSettings:
     path: Assets/SCENES/Title.unity
     guid: 75d11bacf4310d441b187bc0a61a2fd0
   - enabled: 1
-    path: Assets/SCENES/INSTRUCTIONS.unity
+    path: Assets/SCENES/CREDIT.unity
     guid: 9ce888a0b1f0a834caefbe9a53a335cc
   - enabled: 1
     path: Assets/SCENES/GAME TEST.unity
     guid: 417f8c232f1ad1b44a6d4973fb22abe0
   - enabled: 1
-    path: Assets/SCENES/CREDITS.unity
+    path: Assets/SCENES/INSTRUCTION.unity
     guid: 9140668274aac7e479efa685166ab770
+  - enabled: 1
+    path: Assets/SCENES/PAUSE.unity
+    guid: a79d43f170b4a5045bee906465cdf1fa
   m_configObjects: {}

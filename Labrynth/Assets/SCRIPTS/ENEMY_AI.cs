@@ -63,7 +63,8 @@ public class ENEMY_AI : MonoBehaviour {
 
     Animator anim;
 
-	void Start () {
+
+    void Start () {
         // GRAB COMPONENTS
         nav = gameObject.GetComponent<NavMeshAgent>();
         view = gameObject.GetComponentInChildren<Camera>();
