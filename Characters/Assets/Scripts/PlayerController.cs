@@ -120,49 +120,6 @@ public class PlayerController : MonoBehaviour {
             moveSpeed = 0.0f;
         }
     }
-
-    public static void HurtPlayer(int damage)
-    {
-        currHealth -= damage;
-        print("Current health is: " + currHealth);
-        //takeDamage();
-        //anim.SetBool("isHit", false);
-    }
-
-    private static void takeDamage()
-    {
-        anim.SetBool("isHit", true);
-    }
-
-    public static void HealPlayer(int healAmount)
-    {
-        currHealth += healAmount;
-        if (currHealth > maxHealth)
-        {
-            currHealth = maxHealth;
-        }
-
-    }
-
-    public void EnemyHit()
-    {
-        GameObject closestEnemy = enemies[0];
-        float dist = Vector3.Distance(transform.position, enemies[0].transform.position);
-        for (int i = 0; i < enemies.Length; i++)
-        {
-            var tempDistance = Vector3.Distance(transform.position, enemies[i].transform.position);
-            if(tempDistance < dist)
-            {
-                closestEnemy = enemies[i];
-            }
-        }
-        var enDis = Vector3.Distance(transform.position, closestEnemy.transform.position);
-        print(closestEnemy);
-        if(enDis <= attackDistance)
-        {
-            EnemyController.HurtEnemy(damage, closestEnemy);
-        }
-    }
 }
 
 // 2. Sword push enemies

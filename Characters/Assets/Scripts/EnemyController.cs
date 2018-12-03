@@ -66,24 +66,4 @@ public class EnemyController : MonoBehaviour
             moveSpeed = 0.0f;
         }
     }
-
-    public void RegisterHit ()
-    {
-        if (Vector3.Distance(target.position, this.transform.position) < detectionDistance)
-        {
-            Vector3 direction = target.position - enemy.position;
-            if (direction.magnitude < attackDistance)
-            {
-                PlayerController.HurtPlayer(damage);
-            }
-        }
-    }
-
-    public static void HurtEnemy(int damage, GameObject character)
-    {
-        currHealth -= damage;
-        print(character + " health is: " + currHealth);
-        //takeDamage();
-        //anim.SetBool("isHit", false);
-   }
 }

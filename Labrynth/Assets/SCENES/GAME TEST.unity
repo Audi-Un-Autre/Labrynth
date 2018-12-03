@@ -9413,7 +9413,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fc128c6e07cbf646ae6033b1bfb0b82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: {fileID: 419479393}
   UI: {fileID: 0}
   fade: 0
   audio: {fileID: 253822505}
@@ -11057,6 +11056,7 @@ GameObject:
   - component: {fileID: 334653613}
   - component: {fileID: 334653615}
   - component: {fileID: 334653614}
+  - component: {fileID: 334653616}
   m_Layer: 0
   m_Name: Paladin_J_Nordstrom_Sword
   m_TagString: Untagged
@@ -11139,6 +11139,18 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.06104052, y: -0.006658852, z: 0.3036496}
     m_Extent: {x: 0.15018207, y: 0.045836862, z: 0.50709116}
   m_DirtyAABB: 0
+--- !u!114 &334653616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 334653612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d1d22d3227ded34cbb33b2de84ec019, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 0}
 --- !u!1001 &341123106
 Prefab:
   m_ObjectHideFlags: 0
@@ -17161,9 +17173,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1660135731}
+  maxHealth: 0
+  currHealth: 0
   damage: 1
   wayPoints: []
-  nav: {fileID: 0}
+  nav: {fileID: 392673700}
   trackHealth: 0
   heardAt: {x: 0, y: 0, z: 0}
   state: 0
@@ -17175,7 +17189,7 @@ Light:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 392673697}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 8
   m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -17239,19 +17253,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.57, y: 2, z: 0.76}
   m_Center: {x: 0, y: 0.97, z: 0}
---- !u!114 &392673703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 392673697}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae97a8ca3b87ef9448aa85af88c8e289, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  source: {fileID: 0}
-  enemy: {fileID: 392673698}
 --- !u!1001 &392741034
 Prefab:
   m_ObjectHideFlags: 0
@@ -18284,6 +18285,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1660135731}
+  maxHealth: 0
+  currHealth: 0
   damage: 1
   wayPoints: []
   nav: {fileID: 0}
@@ -18310,7 +18313,7 @@ Light:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 423106401}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 8
   m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -82261,7 +82264,6 @@ GameObject:
   - component: {fileID: 1660135731}
   - component: {fileID: 1660135730}
   - component: {fileID: 1660135736}
-  - component: {fileID: 1660135737}
   m_Layer: 0
   m_Name: PLAYER
   m_TagString: Player
@@ -82303,7 +82305,7 @@ MonoBehaviour:
   trackHealth: 0
   hitColliders: []
   moving: 0
-  anima: {fileID: 1660135737}
+  anima: {fileID: 0}
   maxSpeed: 0
 --- !u!65 &1660135732
 BoxCollider:
@@ -82385,20 +82387,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   track: {fileID: 1660135731}
   consumed: 0
---- !u!111 &1660135737
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1660135729}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 0e91e5d193912b648882925d510dae4b, type: 3}
-  m_Animations: []
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!1001 &1662918330
 Prefab:
   m_ObjectHideFlags: 0
@@ -88569,6 +88557,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1660135731}
+  maxHealth: 0
+  currHealth: 0
   damage: 1
   wayPoints: []
   nav: {fileID: 0}
@@ -88583,7 +88573,7 @@ Light:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1724241987}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 8
   m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -126911,6 +126901,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1660135731}
+  maxHealth: 0
+  currHealth: 0
   damage: 1
   wayPoints: []
   nav: {fileID: 0}
@@ -126925,7 +126917,7 @@ Light:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2045944729}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 8
   m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}

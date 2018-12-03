@@ -8,8 +8,8 @@ using Random = UnityEngine.Random;
 public class ENEMY_AI : MonoBehaviour {
 
     [SerializeField] PlayerController player;
-    [SerializeField] public static float maxHealth;
-    [SerializeField] public static float currHealth;
+    [SerializeField] public float maxHealth;
+    [SerializeField] public float currHealth;
     [SerializeField] private int damage = 1;
 
     Camera view;
@@ -28,7 +28,6 @@ public class ENEMY_AI : MonoBehaviour {
 
     private Plane[] geoPlanes;
     private Collider objectCollision;
-    Rigidbody rb;
 
     public enum GameState {IDLE, ALERTED, CHASING, PATROL, ATTACKING, DEATH};
     public GameState state;
@@ -380,14 +379,6 @@ public class ENEMY_AI : MonoBehaviour {
         Debug.Log("STATE: ALERTED.");
     }
 
-    public static void HurtEnemy(int damage, GameObject character)
-    {
-        currHealth -= damage;
-        print(character + " health is: " + currHealth);
-        //takeDamage();
-        //anim.SetBool("isHit", false);
-    }
-
     void Chasing(Vector3 playerPosition){
         Debug.Log("STATE: CHASING.");
         nav.speed = CHASE_SPEED;
@@ -424,7 +415,7 @@ public class ENEMY_AI : MonoBehaviour {
             }
         }
     }
-    
+
     void OnTriggerExit(Collider other){
         if (other.gameObject.tag == "Stairs"){
             Debug.Log(other.gameObject);
