@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-
+    public AudioSource audio;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float runMultiplier;
     [SerializeField] private int damage = 1;
@@ -12,16 +12,14 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private GameObject[] enemies;
     private Transform target;
     private float distance;
-    public static float maxHealth;
-    public static float currHealth;
-    public float trackHealth;
+    public float maxHealth;
+    public float currHealth;
 
     private CharacterController character;
     private Vector3 movement;
     static Animator anim;
     public Collider[] hitColliders;
     [SerializeField] bool moving;
-    public Animation anima;
 
     float defaultSpeed = 12f;
     float colMod = .5f;
@@ -55,12 +53,15 @@ public class PlayerController : MonoBehaviour {
 
     void Update()
     {
-        trackHealth = currHealth;
         RunOrWalk();
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)){
             moving = true;
-        else
+            if (!audio.isPlaying)
+                audio.Play();
+        }
+        else{
             moving = false;
+        }
 
         Cursor.visible = false;
     }
@@ -178,6 +179,7 @@ public class PlayerController : MonoBehaviour {
         {
             if (Input.GetKey(KeyCode.LeftShift))
             {
+                audio.volume = 1f;
                 maxCol = 5f;
                 waitTime += Time.deltaTime * .25f;
 
@@ -209,6 +211,7 @@ public class PlayerController : MonoBehaviour {
         }
         else
         {
+            audio.volume = .75f;
             waitTime += Time.deltaTime * .5f;
             if (waitTime <= maxTime)
             {

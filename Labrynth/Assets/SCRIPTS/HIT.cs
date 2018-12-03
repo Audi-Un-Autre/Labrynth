@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HIT : MonoBehaviour {
 
+    public PlayerController health;
     public CanvasGroup UI;
     public bool fade = false;
     public AudioSource audio;
@@ -16,12 +17,12 @@ public class HIT : MonoBehaviour {
 
     public void Update()
     {
-        if (PlayerController.currHealth < 10 && UI.alpha != 1){
+        if (health.currHealth < 10 && UI.alpha != 1){
             FadeIn();
             if (!audio.isPlaying)
                 audio.Play(0);
         }
-        else if (PlayerController.currHealth >= 10 && UI.alpha != 0){
+        else if (health.currHealth >= 10 && UI.alpha != 0){
             FadeOut();
             if (audio.isPlaying)
                 audio.Pause();

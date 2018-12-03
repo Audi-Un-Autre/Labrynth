@@ -11,19 +11,19 @@ public class ENEMY_AI : MonoBehaviour {
     [SerializeField] public float maxHealth;
     [SerializeField] public float currHealth;
     [SerializeField] private int damage = 1;
+    public AudioSource audio;
+    public AudioSource attack;
 
     Camera view;
     [SerializeField] GameObject[] wayPoints;
     private GameObject wayPoint;
     public NavMeshAgent nav;
     Light light;
-    public float trackHealth;
 
     Vector3 destination;
     Vector3 playerDestination;
     Vector3 randDirection;
     Vector3 lastSeen;
-    public Vector3 heardAt;
     Quaternion look;
 
     private Plane[] geoPlanes;
@@ -40,10 +40,12 @@ public class ENEMY_AI : MonoBehaviour {
     static float IDLE_SPEED = 2f;
     static float PATROL_SPEED = 1f;
     static float ALERT_SPEED = 0f;
-    static float CHASE_SPEED = 10f;
-    static float SPEED_MODIFER = 1.5f;
+    static float CHASE_SPEED = 4f;
     static int _wayPoints = 4;
+    public Vector3 heardAt;
 
+    float waitAttack = 0f;
+    float maxAttack = 2f;
     float waitTime = 0f;
     float maxTime = 10f;
     float idleTime = 0f;
@@ -92,11 +94,10 @@ public class ENEMY_AI : MonoBehaviour {
     }
 	
 	void Update () {
-
-        trackHealth = currHealth;
-
-        if (nav.velocity != Vector3.zero)
+        float dist = Vector3.Distance(playerDestination, transform.position);
+        if (nav.velocity != Vector3.zero){
             anim.SetBool("isMoving", true);
+        }
         else
             anim.SetBool("isMoving", false);
 
@@ -129,13 +130,29 @@ public class ENEMY_AI : MonoBehaviour {
                 }
                 break;
 
-            case GameState.CHASING:
+            case GameState.CHASING:   
                 light.color = Color.red;
-                if (CheckForPlayer())
-                    Chasing(playerDestination);
+                    if (CheckForPlayer()){
+                        Chasing(playerDestination);
+                        if (dist < 4f){
+                            {
+                                Attacking();
+                                waitAttack += Time.deltaTime;
+                                if (waitAttack >= maxAttack)
+                                {
+                                    waitAttack = 0;
+                                    player.currHealth -= 1;
+                                }
+                            }
+                        }
+                        else{
+                            anim.SetBool("isAttacking", false);
+                        }
+                    }
                 else
                 {
                     destinationSet = false;
+                    anim.SetBool("isAttacking", false);
                     state = GameState.ALERTED;
                 }
                 break;
@@ -146,7 +163,6 @@ public class ENEMY_AI : MonoBehaviour {
                 if (playerHeard && !CheckForPlayer()){
                     Chasing(heardAt);
                     if (!destinationSet){ // "arrived at location"
-                        //locationCaptured = false;
                         playerHeard = false;
                         light.color = Color.yellow;
                         waitTime += Time.deltaTime;
@@ -156,6 +172,7 @@ public class ENEMY_AI : MonoBehaviour {
                             waitTime = 0;
                             destinationSet = false;
                             wait = 0;
+                            playerHeard = false;
                             state = GameState.PATROL;
                         }
                         else if (waitTime < maxTime)
@@ -168,7 +185,8 @@ public class ENEMY_AI : MonoBehaviour {
                                 waitTime = 0;
                                 destinationSet = false;
                                 wait = 0;
-                                state = GameState.CHASING;
+                                playerHeard = false;
+                                state = GameState.CHASING;                               
                             }
                         }
                     }
@@ -209,7 +227,6 @@ public class ENEMY_AI : MonoBehaviour {
                 }
                 break;
 
-            // CREATE WAYPOINTS BASED ON LAST SEEN LOCATION ****
             case GameState.PATROL:
                 light.color = Color.blue;
                 bool called = false;
@@ -227,22 +244,9 @@ public class ENEMY_AI : MonoBehaviour {
                 }
                 break;
 
-            // HANDLE ATTACK ANIMs AND HP 
-            case GameState.ATTACKING:
-                light.color = Color.red;
-                // IF PLAYER IS IN FRUSTRUM AND WITHIN DISTANCE, ATTACK
-                if (!CheckForPlayer()){
-                    anim.SetBool("isAttacking", false);
-                    state = GameState.ALERTED;
-                }
-
-                break;
-
-            // HANDLE DEATH ANIMs & MODEL FADEOUT 
             case GameState.DEATH:
                 anim.SetBool("isDead", true);
                 this.enabled = false;
-                //Destroy(gameObject);
                 break;
         }
     }
@@ -397,6 +401,8 @@ public class ENEMY_AI : MonoBehaviour {
 
     void Attacking(){
         anim.SetBool("isAttacking", true);
+        if (!attack.isPlaying)
+            attack.Play();
     }
 
     void SetDestination(Vector3 dest){
