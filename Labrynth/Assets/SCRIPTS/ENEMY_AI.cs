@@ -249,6 +249,7 @@ public class ENEMY_AI : MonoBehaviour {
             case GameState.DEATH:
                 anim.SetBool("isDead", true);
                 GetComponent<Light>().enabled = false;
+                Destroy(gameObject.GetComponent<BoxCollider>());
                 this.enabled = false;
                 
                 break;
