@@ -17317,7 +17317,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 7
+  MaxDistance: 10.28
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -18504,7 +18504,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 7
+  MaxDistance: 10.28
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -68545,6 +68545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ac27c5b120caae43babfd8b773c63c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1660135731}
 --- !u!114 &1400165670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89374,7 +89375,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 7
+  MaxDistance: 10.28
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -127941,7 +127942,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 7
+  MaxDistance: 10.28
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0

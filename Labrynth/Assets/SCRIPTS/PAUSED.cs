@@ -26,6 +26,7 @@ public class PAUSED : MonoBehaviour {
                 Pause();
             }
         }
+
 	}
 
     public void Resume(){

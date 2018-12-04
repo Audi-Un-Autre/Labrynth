@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        maxHealth = 20;
+        maxHealth = 15;
         currHealth = 10;
         enemyLayer = 1 << LayerMask.NameToLayer("enemy");
         enemies = GameObject.FindGameObjectsWithTag("Enemy");

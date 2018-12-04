@@ -45,7 +45,7 @@ public class ENEMY_AI : MonoBehaviour {
     public Vector3 heardAt;
 
     float waitAttack = 0f;
-    float maxAttack = 2f;
+    float maxAttack = 2.8f;
     float waitTime = 0f;
     float maxTime = 10f;
     float idleTime = 0f;
@@ -143,8 +143,9 @@ public class ENEMY_AI : MonoBehaviour {
                                 {
                                     waitAttack = 0;
                                     player.currHealth -= 1;
-                                }
+                                    attack.Play();
                             }
+                        }
                         }
                         else{
                             anim.SetBool("isAttacking", false);
@@ -402,8 +403,6 @@ public class ENEMY_AI : MonoBehaviour {
 
     void Attacking(){
         anim.SetBool("isAttacking", true);
-        if (!attack.isPlaying)
-            attack.Play();
     }
 
     void SetDestination(Vector3 dest){

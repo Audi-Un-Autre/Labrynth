@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
 
+    public PlayerController player;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -18,7 +20,8 @@ public class MainMenu : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-
+        if (player.currHealth <= 0)
+            NewGame("Title");
     }
 
     public void NewGame(string scene)
