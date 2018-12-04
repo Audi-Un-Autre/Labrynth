@@ -31,7 +31,6 @@ public class PAUSED : MonoBehaviour {
 
     public void Resume(){
         AudioListener.pause = false;
-        AudioListener.pause = false;
         player.enabled = true;
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;

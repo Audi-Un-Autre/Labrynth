@@ -14,14 +14,18 @@ public class MainMenu : MonoBehaviour {
 
     private void Awake()
     {
+        Cursor.lockState = CursorLockMode.Confined;
+        AudioListener.pause = false;
         Cursor.visible = true;
         Time.timeScale = 1f;
     }
 
     // Update is called once per frame
     void Update () {
-        if (player.currHealth <= 0)
-            NewGame("Title");
+        if (SceneManager.GetActiveScene().name == "GAME TEST"){
+            if (player.currHealth <= 0)
+                NewGame("Title");
+        }
     }
 
     public void NewGame(string scene)
