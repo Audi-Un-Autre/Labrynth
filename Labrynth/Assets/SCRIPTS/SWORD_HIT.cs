@@ -12,7 +12,7 @@ public class SWORD_HIT : MonoBehaviour {
         anim = transform.root.GetComponent<Animator>();
     }
     private void OnTriggerEnter(Collider col){
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("basicAttack") && col.transform.tag == "Enemy"){
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("basicAttack") && (col.transform.tag == "Enemy" || col.transform.tag == "Boss")){
             Debug.Log("ENEMY HIT");
             col.GetComponent<ENEMY_AI>().currHealth -= swordDmg;
 

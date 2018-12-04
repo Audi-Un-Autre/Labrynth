@@ -36,6 +36,8 @@ public class PlayerController : MonoBehaviour {
     ENEMY_AI thisEnemy;
     int enemyLayer;
 
+    public GameObject gate;
+    public ENEMY_AI boss;
    
     // Use this for initialization
     void Start ()
@@ -54,6 +56,8 @@ public class PlayerController : MonoBehaviour {
 
     void Update()
     {
+        if (boss.currHealth <= 0)
+            Destroy(gate);
 
         RunOrWalk();
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)){
