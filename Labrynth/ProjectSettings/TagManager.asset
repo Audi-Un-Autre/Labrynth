@@ -12,6 +12,7 @@ TagManager:
   - Potion
   - Food
   - TitleMusic
+  - main
   layers:
   - Default
   - TransparentFX

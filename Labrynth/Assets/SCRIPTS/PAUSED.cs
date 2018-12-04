@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PAUSED : MonoBehaviour {
 
+
     public PlayerController player;
     public static bool paused = false;
     public GameObject pauseMenu;
@@ -28,6 +29,8 @@ public class PAUSED : MonoBehaviour {
 	}
 
     public void Resume(){
+
+        AudioListener.pause = false;
         player.enabled = true;
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
@@ -36,6 +39,7 @@ public class PAUSED : MonoBehaviour {
 
     public void Pause()
     {
+
         player.enabled = false;
         Cursor.visible = true;
         pauseMenu.SetActive(true);
