@@ -11,6 +11,7 @@ TagManager:
   - Enemy
   - Potion
   - Food
+  - TitleMusic
   layers:
   - Default
   - TransparentFX
