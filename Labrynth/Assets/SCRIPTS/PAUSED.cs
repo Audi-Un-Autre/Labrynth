@@ -29,7 +29,7 @@ public class PAUSED : MonoBehaviour {
 	}
 
     public void Resume(){
-
+        AudioListener.pause = false;
         AudioListener.pause = false;
         player.enabled = true;
         pauseMenu.SetActive(false);
@@ -39,7 +39,7 @@ public class PAUSED : MonoBehaviour {
 
     public void Pause()
     {
-
+        AudioListener.pause = true;
         player.enabled = false;
         Cursor.visible = true;
         pauseMenu.SetActive(true);
